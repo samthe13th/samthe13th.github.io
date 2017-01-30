@@ -1,6 +1,8 @@
 var game = new Phaser.Game(600, 500, Phaser.CANVAS, 'vb-stage', { preload: preload, create: create, update: update, render: render }, true);
 var levels = [
     {
+        start: { x: 0, y: 200 },
+        finish: { x: 500, y: 200 },
         map: [
             ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
             ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
@@ -15,6 +17,8 @@ var levels = [
         tiles: ["E"]
     },
     {
+        start: { x: 50, y: 400 },
+        finish: { x: 450, y: 200 },
         map: [
             ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
             ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
@@ -27,6 +31,22 @@ var levels = [
             ["F", "F", "F", "X", "X", "X", "X", "X", "F", "F", "F"]
         ],
         tiles: ["N", "E", "S", "S"]
+    },
+    {
+        start: { x: 0, y: 400 },
+        finish: { x: 250, y: 250 },
+        map: [
+            ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
+            ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
+            ["F", "F", "X", "X", "X", "X", "X", "X", "X", "F", "F"],
+            ["F", "F", "X", "X", "X", "X", "X", "X", "X", "F", "F"],
+            ["F", "F", "X", "X", "F", "F", "F", "X", "X", "F", "F"],
+            ["F", "F", "X", "X", "F", "F", "F", "X", "X", "F", "F"],
+            ["F", "F", "X", "X", "F", "F", "F", "X", "X", "F", "F"],
+            ["F", "F", "X", "X", "F", "F", "F", "F", "F", "F", "F"],
+            ["F", "F", "X", "X", "F", "F", "F", "F", "F", "F", "F"]
+        ],
+        tiles: ["N", "N", "N","W","W","S","S","E"]
     }
 ]
 var lvlnum = 0;
@@ -41,10 +61,10 @@ var tiles;
 var end;
 var dy = -1;
 var dx = 0;
-var startx = 0;
-var starty = 200;
-var finx = 500;
-var finy = 200;
+var startx = level.start.x;
+var starty = level.start.y;
+var finx = level.finish.x;
+var finy = level.finish.y;
 var graphics;
 var holes = [];
 var nodes = [];
@@ -70,6 +90,7 @@ function create() {
     setTiles();
 }
 function setUpLevel() {
+    console.log("SET UP");
     var row = 0;
     var col = 0;
     var xpos;
@@ -89,6 +110,11 @@ function setUpLevel() {
     for (var i = 0; i < 11; i++) {
         game.add.sprite((i * tileWidth), 450, 'slot', 0);
     };
+    console.log("START: " + JSON.stringify(level.start));
+    startx = level.start.x;
+    starty = level.start.y;
+    finx = level.finish.x;
+    finy = level.finish.y;
     end = game.add.sprite(finx, finy, "END");
     ball = game.add.sprite(startx, starty, "B");
     ball.checkWorldBounds = true;
@@ -167,6 +193,7 @@ function update() {
         ball.body.velocity.x = 0;
         ball.body.velocity.y = 0;
         alert("LEVEL COMPLETE!");
+        console.log("CLEAR AND RESET>>");
         clearLevel();
         reset();
     }
@@ -224,6 +251,7 @@ function checkOverlap(spriteA, spriteB) {
     return Phaser.Rectangle.intersects(boundsA, boundsB);
 }
 function reset() {
+    console.log("RESET");
     if (lvlnum < (levels.length - 1)) {
         lvlnum++;
     }
