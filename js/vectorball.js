@@ -1,12 +1,35 @@
-var game = new Phaser.Game(550, 500, Phaser.CANVAS, 'vb-stage', { preload: preload, create: create, update: update, render: render }, true);
+var game = new Phaser.Game(800, 500, Phaser.CANVAS, 'vb-stage', { preload: preload, create: create, update: update, render: render }, true);
+WebFontConfig = {
+    active: function () { game.time.events.add(Phaser.Timer.SECOND, drawSidePanel, this); },
+    google: {
+        families: ['Revalia']
+    }
+};
 var levels = [
+    {
+        start: { x: 0, y: 250 },
+        finish: { x: 500, y: 250 },
+        map: [
+            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
+            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
+            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
+            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
+            ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
+            ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
+            ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
+            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
+            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"]
+        ],
+        tiles: ["E"],
+        balls: [{ x: 0, y: 200 }]
+    },
     {
         start: { x: 0, y: 400 },
         finish: { x: 500, y: 400 },
         map: [
             ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
             ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
-            ["R", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
+            ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
             ["F", "X", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
             ["F", "X", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
             ["F", "X", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
@@ -14,24 +37,7 @@ var levels = [
             ["F", "X", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
             ["F", "X", "F", "F", "F", "F", "F", "F", "F", "F", "F"]
         ],
-        tiles: ["N", "W", "E", "S", "N", "W", "E", "S", "N", "W", "E"],
-        balls: [{ x: 0, y: 200 }]
-    },
-    {
-        start: { x: 0, y: 200 },
-        finish: { x: 500, y: 200 },
-        map: [
-            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
-            ["X", "X", "X", "X", "X", "R", "X", "X", "X", "X", "X"],
-            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
-            ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
-            ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
-            ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
-            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
-            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
-            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"]
-        ],
-        tiles: ["E"],
+        tiles: ["N", "S", "E", "S"],
         balls: [{ x: 0, y: 200 }]
     },
     {
@@ -69,22 +75,39 @@ var levels = [
         balls: [{ x: 0, y: 200 }]
     },
     {
-        start: { x: 0, y: 400 },
-        finish: { x: 250, y: 250 },
+        start: { x: 0, y: 100 },
+        finish: { x: 500, y: 350 },
         map: [
-            ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
-            ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
-            ["F", "F", "X", "X", "X", "X", "X", "X", "X", "F", "F"],
-            ["F", "F", "X", "X", "X", "X", "X", "X", "X", "F", "F"],
-            ["F", "F", "X", "X", "F", "F", "F", "X", "X", "F", "F"],
-            ["F", "F", "X", "X", "F", "F", "F", "X", "X", "F", "F"],
-            ["F", "F", "X", "X", "F", "F", "F", "X", "X", "F", "F"],
-            ["F", "F", "X", "X", "F", "F", "F", "F", "F", "F", "F"],
-            ["F", "F", "X", "X", "F", "F", "F", "F", "F", "F", "F"]
+            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
+            ["F", "F", "F", "F", "F", "F", "F", "F", "F", "X", "X"],
+            ["F", "F", "F", "F", "F", "F", "F", "P", "F", "X", "X"],
+            ["F", "F", "F", "F", "F", "F", "F", "F", "F", "X", "X"],
+            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
+            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
+            ["X", "X", "P", "F", "F", "F", "F", "F", "F", "F", "F"],
+            ["X", "X", "F", "F", "F", "F", "F", "F", "F", "F", "F"],
+            ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"]
         ],
-        tiles: ["N", "N", "N", "W", "W", "S", "S", "E"],
-        balls: [{ x: 250, y: 250 }]
-    }
+        tiles: ["E", "S"],
+        balls: [{ x: 0, y: 200 }]
+    },
+    {
+        start: { x: 0, y: 400 },
+        finish: { x: 500, y: 0 },
+        map: [
+            ["X", "X", "X", "X", "X", "X", "X", "X", "F", "F", "F"],
+            ["F", "F", "F", "F", "F", "P", "X", "X", "F", "F", "F"],
+            ["F", "F", "F", "F", "F", "F", "X", "X", "F", "F", "F"],
+            ["F", "F", "F", "F", "F", "F", "X", "X", "F", "F", "F"],
+            ["F", "F", "F", "F", "F", "F", "X", "X", "F", "F", "F"],
+            ["F", "F", "F", "F", "F", "F", "X", "X", "F", "F", "F"],
+            ["F", "F", "F", "F", "F", "F", "X", "X", "P", "F", "F"],
+            ["F", "F", "F", "F", "F", "F", "X", "X", "X", "X", "X"],
+            ["F", "F", "F", "F", "F", "F", "X", "X", "X", "X", "X"]
+        ],
+        tiles: ["N", "N", "E", "N"],
+        balls: [{ x: 0, y: 200 }]
+    },
 ]
 var levelEnd = false;
 var doors = [];
@@ -102,10 +125,13 @@ var speed = 200;
 var acc = 200;
 var tiles2 = [];
 var tiles1 = [];
+var portholes = [];
 var end;
 var dy = -1;
 var dx = 0;
+var endVx, endVy, endV;
 var collideTimer = null;
+var portholeTimer = null;
 var startx = level.start.x;
 var starty = level.start.y;
 var finx = level.finish.x;
@@ -119,6 +145,11 @@ var plus;
 var nextbtn;
 var complete;
 function preload() {
+    //Load the Google WebFont Loader script
+    game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+    //Load graphics
+    game.load.image("howto", "assets/vectorball/howto.png");
+    game.load.image("P", 'assets/vectorball/porthole.png', 50, 50);
     game.load.spritesheet('G', 'assets/vectorball/adown.png', 50, 50);
     game.load.spritesheet("R", 'assets/vectorball/staticright.png', 50, 50);
     game.load.spritesheet('next', 'assets/vectorball/nextbtn.png', 150, 50);
@@ -141,17 +172,33 @@ function create() {
     game.physics.setBoundsToWorld();
     tiles = game.add.group();
     line = game.add.graphics(0, 0);
+    game.add.graphics(0, 0).beginFill(0xFFFFFF).drawRect(550, 0, 250, 500);
     setUpLevel();
     var sprite = "end";
     setTiles();
-    //makeEndDoors();
-    //makeBtn();
 }
 function makeEndDoors() {
-    makeDoor(0xf4ea5a, game.width, game.height, 0);
+    makeDoor(0xf4ea5a, 500, game.height, 0);
     makeDoor(0xf4c65a, 0, 0, (Math.PI));
-    makeDoor(0xf4a75a, game.width, 0, (3 * Math.PI / 2));
+    makeDoor(0xf4a75a, 500, 0, (3 * Math.PI / 2));
     makeDoor(0xf4d95a, 0, game.height, (Math.PI / 2));
+}
+var panelTxt;
+function drawSidePanel() {
+    var titleFont;
+    var SP = game.add.graphics(0, 0);
+    SP.beginFill(0xFFFFFF);
+    SP.drawRect(550, 0, 250, 500);
+    SP.lineStyle(4, 0x000000, 1);
+    SP.drawRect(570, 4, 220, 250);
+    titleFont = game.add.text(680, 20, "VECTORBALL");
+    titleFont.anchor.setTo(0.5, 0);
+    titleFont.font = 'Revalia';
+    titleFont.fontSize = 24;
+    panelTxt = game.add.text(585, 60, "Level " + (lvlnum + 1) + "\n\nVx = " + ball.body.velocity.x + " px/s" + "\nVy = " + ball.body.velocity.y + " px/s\nV = " + Math.sqrt(Math.pow(ball.body.velocity.x, 2) + Math.pow(ball.body.velocity.y, 2)) + " px/s");
+    panelTxt.font = 'Revalia';
+    panelTxt.fontSize = 20;
+
 }
 function makeDoor(color, px, py, rot) {
     var door;
@@ -171,6 +218,10 @@ function closeDoor() {
     levelEnd = true;
 }
 function setUpLevel() {
+    if (lvlnum === 0) {
+        var howto = game.add.image(game.world.centerX - 130, 20, "howto");
+        howto.anchor.setTo(0.5, 0);
+    }
     makeBtn();
     console.log("SET UP");
     var row = 0;
@@ -192,13 +243,16 @@ function setUpLevel() {
             if (map[row][i] === 'X') {
                 holes.push(newTile);
             }
+            if (map[row][i] === 'P') {
+                portholes.push(newTile);
+            }
         }
         row++;
     };
     for (var i = 0; i < 11; i++) {
         game.add.sprite((i * tileWidth), 450, 'slot', 0);
     };
-    console.log("START: " + JSON.stringify(level.start));
+    //  console.log("START: " + JSON.stringify(level.start));
     startx = level.start.x;
     starty = level.start.y;
     finx = level.finish.x;
@@ -207,6 +261,8 @@ function setUpLevel() {
     ball = game.add.sprite(startx, starty, "B");
     ball.checkWorldBounds = true;
     ball.events.onOutOfBounds.add(ballOut, this);
+    ball.toPorthole = null;
+
     game.physics.enable([ball], Phaser.Physics.ARCADE);
     game.physics.enable(tiles2, Phaser.Physics.ARCADE)
     graphics = game.add.graphics(25, 25);
@@ -214,6 +270,7 @@ function setUpLevel() {
     nope = game.add.sprite(startx, starty, "nope");
     nope.bringToTop();
     nope.visible = false;
+    //drawSidePanel();
     window.graphics = graphics;
 }
 function drawLine() {
@@ -225,7 +282,6 @@ function setTiles() {
     var row = 0;
     var col = 0;
     for (var i = 0; i < level.tiles.length; i++) {
-        console.log("c: " + col + " r: " + row + " id: " + level.tiles[i]);
         var vt = VTile((i * tileWidth), 450, level.tiles[i]);
         tiles2.push(vt);
     }
@@ -266,13 +322,39 @@ function VTile(x, y, val) {
     return v;
 }
 function update() {
+    if (portholeTimer !== null) {
+        portholeTimer--;
+        if (portholeTimer <= 0) {
+            portholeTimer = null;
+        }
+        if (portholeTimer > 40) {
+            console.log("freeze");
+            if (ball.visible) {
+                ball.lastdx = ball.body.velocity.x;
+                ball.lastdy = ball.body.velocity.y;
+                ball.visible = false;
+                ball.body.velocity.x = 0;
+                ball.body.velocity.y = 0;
+            }
+        } else {
+            ball.visible = true;
+            if (ball.toPorthole !== null) {
+                ball.x = 200;
+                ball.x = portholes[ball.toPorthole].x;
+                ball.y = portholes[ball.toPorthole].y;
+                nodes.push({ x: portholes[ball.toPorthole].x, y: portholes[ball.toPorthole].y });
+                ball.body.velocity.x = ball.lastdx;
+                ball.body.velocity.y = ball.lastdy;
+                ball.toPorthole = null;
+            }
+        }
+    }
     if (collideTimer !== null) {
         collideTimer--;
         if (collideTimer <= 0) {
             for (var i = 0; i < tiles2.length; i++) {
                 tiles2[i].collidedWith = false;
             }
-            //alert("End Timer");
             collideTimer = null;
         }
     }
@@ -283,11 +365,16 @@ function update() {
         if (nodes.length > 1) {
             for (var i = 1; i < nodes.length; i++) {
                 graphics.lineTo(nodes[i].x, nodes[i].y);
+                if (nodes[i].visible === false) {
+                    graphics.lineStyle(0, 0x90ee90, 1);
+                } else {
+                    graphics.lineStyle(10, 0xffd900, 1);
+                }
             }
         }
         graphics.lineTo(ball.x, ball.y);
     }
-    if (ball.body.velocity.x === 0 && ball.body.velocity.y === 0 && (ball.x !== startx || ball.y !== starty)) {
+    if (collideTimer === null && portholeTimer === null && ball.body.velocity.x === 0 && ball.body.velocity.y === 0 && (ball.x !== startx || ball.y !== starty)) {
         if (levelEnd === false) {
             resetBall();
         }
@@ -308,7 +395,7 @@ function update() {
                 collideTimerSet(tiles2[i]);
                 tiles2[i].animations.play('spring', 30, false);
                 tiles2[i].frame = 0;
-                nodes.push({ x: tiles2[i].x, y: tiles2[i].y });
+                nodes.push({ x: tiles2[i].x, y: tiles2[i].y, visible: true });
             }
         }
     }
@@ -319,11 +406,16 @@ function update() {
                 if (tiles1[i].dir === "E") {
                     ball.body.velocity.x = speed;
                 }
-                nodes.push({ x: tiles1[i].x, y: tiles1[i].y });
+                nodes.push({ x: tiles1[i].x, y: tiles1[i].y, visible: true });
             }
         }
     }
-    if (!levelWin && game.physics.arcade.distanceBetween(ball, end) < 15) {
+    if (game.physics.arcade.distanceBetween(ball, end) < 15) {
+        if (!levelEnd) {
+            endVx = ball.body.velocity.x;
+            endVy = ball.body.velocity.y;
+            endV = Math.round(Math.sqrt(Math.pow(ball.body.velocity.x, 2) + Math.pow(ball.body.velocity.y, 2)));
+        }
         ball.body.velocity.x = 0;
         ball.body.velocity.y = 0;
         closeDoor();
@@ -331,6 +423,16 @@ function update() {
     for (var i = 0; i < holes.length; i++) {
         if (game.physics.arcade.distanceBetween(ball, holes[i]) < 10) {
             resetBall();
+        }
+    }
+    for (var i = 0; i < portholes.length; i++) {
+        if (game.physics.arcade.distanceBetween(ball, portholes[i]) < 12) {
+            if (portholeTimer === null) {
+                var goto = toggle(i);
+                portholeTimer = 60;
+                ball.toPorthole = goto;
+                nodes.push({ x: portholes[i].x, y: portholes[i].y, visible: false });
+            }
         }
     }
     if (go === false) {
@@ -358,17 +460,28 @@ function update() {
         }
     }
     if (levelEnd) {
+        //alert("lvlnum: " + lvlnum);
         for (var i = 0; i < doors.length; i++) {
-            if (doorAngle < ((Math.PI / 2) - (Math.PI / 128))) {
+            if (doorAngle < ((4 * Math.PI / 7) - (Math.PI / 128))) {
                 doors[i].rotation -= (Math.PI / 128);
             } else {
                 complete.bringToTop();
                 complete.visible = true;
                 nextbtn.bringToTop();
-                nextbtn.visible = true;
+                if (lvlnum < (levels.length - 1)) {
+                    nextbtn.visible = true;
+                }
             }
         }
         doorAngle += (Math.PI / 128);
+        drawSidePanel();
+    }
+    if (panelTxt !== undefined) {
+        if (levelEnd) {
+            panelTxt.text = "Level " + (lvlnum + 1) + "\n\nVx = " + endVx + " px/s" + "\nVy = " + endVy + " px/s\nV = " + endV + " px/s";
+        } else {
+            panelTxt.text = "Level " + (lvlnum + 1) + "\n\nVx = " + ball.body.velocity.x + " px/s" + "\nVy = " + ball.body.velocity.y + " px/s\nV = " + Math.round(Math.sqrt(Math.pow(ball.body.velocity.x, 2) + Math.pow(ball.body.velocity.y, 2))) + " px/s";
+        }
     }
 }
 function over() { };
@@ -378,11 +491,17 @@ function nextLevel() {
     clearLevel();
     reset();
 }
+function toggle(i) {
+    if (i === 0) {
+        return 1;
+    }
+    return 0;
+}
 function makeBtn() {
-    console.log("MAKE BTN");
+    // console.log("MAKE BTN");
     complete = game.add.sprite(0, 175, "complete");
     complete.visible = false;
-    nextbtn = game.add.button(game.world.centerX - 75, game.world.centerY + 100, 'next', nextLevel, this, 1, 0, 2);
+    nextbtn = game.add.button(game.world.centerX - 210, game.world.centerY + 100, 'next', nextLevel, this, 1, 0, 2);
     nextbtn.visible = false;
 }
 function clearLevel() {
@@ -393,7 +512,7 @@ function hideNope() {
 }
 function collideTimerSet(t) {
     t.collidedWith = true;
-    collideTimer = 20;
+    collideTimer = 10;
 }
 function checkOverlap(t1, t2) {
     var boundsA = t1.getBounds();
@@ -423,7 +542,6 @@ function processCallback(ball, tile) {
 }
 function ballOut() {
     resetBall();
-    console.log("ball out");
 }
 function resetBall() {
     nodes = [];
@@ -449,12 +567,13 @@ function reset() {
     })
     holes = [];
     nodes = [];
+    portholes = [];
     levelEnd = false;
     doorAngle = 0;
     setUpLevel();
     setTiles();
     doors = [];
-    //  makeEndDoors();
+    drawSidePanel();
 }
 function destroyTiles() {
     tiles.forEach(function (tile) {
@@ -462,9 +581,12 @@ function destroyTiles() {
     })
 }
 function render() {
-    game.debug.text("DEMO! Drag", 180, 350);
-    // game.debug.text("vector pads (below) ", 180, 365);
-    // game.debug.text("onto course to move ", 180, 380);
+    // game.debug.text("collide timer: " + collideTimer, 180, 335);
+    // game.debug.text("porthole timer: " + portholeTimer, 180, 350);
+    // game.debug.text("To porthole: " + ball.toPorthole, 180, 365);
+    // if (ball !== null && portholes !== []) {
+    //     game.debug.text("dist to porthole 1:  " + game.physics.arcade.distanceBetween(ball, portholes[0]), 180, 380);
+    // }
     // game.debug.text("ball towards finish.", 180, 395);
     //game.debug.text("close Angle = " + doorAngle, 180, 395);
     // if (currentTile === null) {
@@ -478,5 +600,5 @@ function render() {
     // game.debug.text("intersecting?: " + plusB, 0, 120);
     // game.debug.text(Phaser.Rectangle.intersects(ballB, plusB), 0, 50);
     // game.debug.text("nodes: " + JSON.stringify(nodes), 10, 10);
-    game.debug.text("vel x: " + ball.body.velocity.x + "vel y: " + ball.body.velocity.y, 0, 20)
+    //game.debug.text("vel x: " + ball.body.velocity.x + "vel y: " + ball.body.velocity.y, 0, 20)
 }

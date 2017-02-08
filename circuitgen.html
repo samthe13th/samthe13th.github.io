@@ -1,27 +1,31 @@
 <html>
-<title>
+
+<head>
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-</title>
+</head>
 
 <body>
-    <div class="centered">
-        <div id="circuitStage"></div>
-    </div>
+    <h1>Circuit Generator</h1>
+
+    <svg id="circuitStage" width="500" height="400"></svg>
 </body>
 
 </html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/circuitgen.js"></script>
 
 <style>
     .centered {
         text-align: center;
     }
+    
     #vb-stage {
         background-color: black;
         width: 550;
         text-align: center;
         border-style: "solid";
     }
+    
     .interactiveVideo {
         width: 900px;
     }
