@@ -1,0 +1,25 @@
+<html>
+
+<head></head>
+
+<body>
+    <img id="myImage" src="https://cdn.arstechnica.net/wp-content/uploads/2016/02/5718897981_10faa45ac3_b-640x624.jpg" />
+    <canvas id="myCanvas" width="200" height="100"></canvas>
+</body>
+
+</html>
+
+<script>
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    var img = document.getElementById("myImage");
+    ctx.drawImage(img, 10, 10);
+    var idata = ctx.getImageData(50, 50, 10, 10).data;
+    console.log(JSON.stringify(idata))
+</script>
+
+<style>
+    #myCanvas {
+        border-style: solid;
+    }
+</style>
