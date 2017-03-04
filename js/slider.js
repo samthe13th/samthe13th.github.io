@@ -1,19 +1,24 @@
 var sliderWidth = 10
 var sliderRoundness = 8;
 var dragging = { o: null, id: null };
+var xoffset;
 var Slider = function (stage, x, y, l, m, drag, up) {
-    console.log("make slider");
+    xoffset = document.getElementById("left").getBoundingClientRect().left;
     var bar, rtnSlider, label;
     var snap = m;
     var snapTo = [];
     bar = stage.rect(x, y, l, sliderWidth, sliderRoundness).attr({ fill: "white", opacity: 0.5, stroke: "none" });
     rtnSlider = stage.rect(x, y - (sliderWidth / 2), 10, 20).attr({ fill: "white", stroke: "grey" })
-        .drag(drag, function () { dragging = { o: this } }, function () {
+        .drag(drag, function () {
+            dragging = { o: this };
+            $("body").css("cursor", "pointer");
+        }, function () {
             dragging = { o: null, id: null };
+            $("body").css("cursor", "default");
             up();
         });
     rtnSlider.bar = bar;
-    rtnSlider.sliderX = x;
+    rtnSlider.sliderX = x + xoffset;
     rtnSlider.sliderY = y;
     rtnSlider.sliderLength = l;
     rtnSlider.xabs = rtnSlider.sliderX;
@@ -35,7 +40,6 @@ var Slider = function (stage, x, y, l, m, drag, up) {
         if (Array.isArray(c)) {
             var grad = "180"
             for (var color in c) {
-                console.log(c[color]);
                 grad += "-" + c[color]
             }
             rtnSlider.bar.attr({ fill: grad });
@@ -59,13 +63,14 @@ var Slider = function (stage, x, y, l, m, drag, up) {
     rtnSlider.snap = snap;
     return rtnSlider;
 }
-document.onmousemove = function (e) {
+$("body").mousemove(function (e) {
     $("#op").text(e.pageX);
     var xdiff, moveTo, endPoint;
     var o = dragging.o;
     var trans;
     if (dragging.o !== null) {
         if (isNaN(o.xabs) || o.snap === 0) {
+            console.log("NAN");
             o.xabs = o.sliderX;
         } else {
             xdiff = e.pageX - o.xabs;
@@ -86,6 +91,7 @@ document.onmousemove = function (e) {
                 o.label.translate(trans, 0)
             }
             o.sliderPoint = Math.round(((o.xabs - o.sliderX) / ((o.sliderLength - 10) / o.snap)));
+            console.log("SP: " + o.sliderPoint)
         }
     }
-}
+})
