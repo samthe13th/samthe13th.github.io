@@ -18,10 +18,12 @@ var drag = function () {
         newpos.y = ground;
     } else {
         var cVy = Math.round(100 * (-1 * getVy(vy, 9.81, (slider.sliderPoint / 10)))) / 100;
+        if (isNaN(cVy)) {
+            cVy = 0;
+        }
         currentSpeed = Math.round(10 * Math.sqrt(Math.pow(cVy, 2) + Math.pow(vx, 2))) / 10;
         newpos = calcPosition((pxltom * startx), (pxltom * starty), vx, vy, (slider.sliderPoint / 10), a);
     }
-    //var newdx = 1;
     var newdx = newpos.x - ball.x;
     var newdy = newpos.y - ball.y;
     ball.translate(newdx, newdy);
@@ -46,15 +48,11 @@ var drag = function () {
     });
     PE = (9.81 * current_height);
     KE = (0.5 * Math.pow(currentSpeed, 2));
-    // PEtxt.attr({
-    //     text: " PEtxt: " + (PE / totalEnergy)
-    // });
-    // KEtxt.attr({
-    //     text: " KE: " + (KE / totalEnergy)
-    // })
-    PEbar.attr({
-        width: barw * (PE / totalEnergy)
-    })
+    if (totalEnergy > 0) {
+        PEbar.attr({
+            width: barw * (PE / totalEnergy)
+        })
+    }
     current_height -= (newdy * pxltom);
     current_dx += (newdx * pxltom);
     ball.x = newpos.x;
@@ -311,8 +309,12 @@ function makeScreen2() {
             coords.attr({ text: "(0," + current_height + ")" })
             coords.translate(balldx, (starty - ball.y));
             ball.y = starty;
-            var sliderpos = ((slider.xabs - slider.sliderX) / ((slider.sliderLength - 10) / slider.snap));
-            slider.setSlider(-sliderpos);
+            if (slider.snap > 0) {
+                var sliderpos = ((slider.xabs - slider.sliderX) / ((slider.sliderLength - 10) / slider.snap));
+                slider.setSlider(-sliderpos);
+            } else {
+                slider.setSlider("reset")
+            }
             slider.label.attr({
                 text: "0 sec"
             })
@@ -328,19 +330,18 @@ function makeScreen2() {
             PE = (9.81 * current_height);
             KE = (0.5 * Math.pow(parameters.speed, 2));
             totalEnergy = KE + PE;
+            var PEbar_width;
+            if (totalEnergy > 0) {
+                PEbar_width = barw * (PE / totalEnergy);
+            } else {
+                PEbar_width = 0;
+            }
             PEbar.attr({
-                width: barw * (PE / totalEnergy)
+                width: PEbar_width
             })
-            // PEtxt.attr({
-            //     text: " PEtxt: " + (PE / totalEnergy)
-            // });
-            // KEtxt.attr({
-            //     text: " KE: " + (KE / totalEnergy)
-            // })
             slider.sliderPoint = 0;
             screen2.remove();
             drawPath();
-            // vxTxt.set
         })
         .mouseover(function () {
             $("body").css({ cursor: "pointer" });

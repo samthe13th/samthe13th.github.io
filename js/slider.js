@@ -27,10 +27,16 @@ var Slider = function (stage, x, y, l, m, drag, on, off) {
         this.hide();
     }
     rtnSlider.setSlider = function (p) {
-        var div = (rtnSlider.sliderLength - 10) / rtnSlider.snap;
-        rtnSlider.xabs += p * div;
-        rtnSlider.translate((p * div), 0);
-        rtnSlider.label.translate((p * div), 0);
+        if (p === "reset") {
+            rtnSlider.translate(-1 * (rtnSlider.xabs - rtnSlider.sliderX));
+            rtnSlider.label.translate(-1 * (rtnSlider.xabs - rtnSlider.sliderX))
+            rtnSlider.xabs = rtnSlider.sliderX;
+        } else {
+            var div = (rtnSlider.sliderLength - 10) / rtnSlider.snap;
+            rtnSlider.xabs += p * div;
+            rtnSlider.translate((p * div), 0);
+            rtnSlider.label.translate((p * div), 0);
+        }
     }
     rtnSlider.snapTo = snapTo;
     rtnSlider.snap = snap;
@@ -42,21 +48,25 @@ document.onmousemove = function (e) {
     var o = dragging.o;
     var trans;
     if (dragging.o !== null) {
-        xdiff = e.pageX - o.xabs;
-        moveTo = o.xabs + xdiff;
-        endPoint = o.sliderX + o.sliderLength - 10;
-        if (e.pageX <= o.sliderX) {
-            trans = o.sliderX - o.xabs;
+        if (isNaN(o.xabs) || o.snap === 0) {
             o.xabs = o.sliderX;
-        } else if (moveTo >= endPoint) {
-            trans = endPoint - o.xabs;
-            o.xabs = endPoint;
         } else {
-            trans = xdiff;
-            o.xabs += xdiff;
+            xdiff = e.pageX - o.xabs;
+            moveTo = o.xabs + xdiff;
+            endPoint = o.sliderX + o.sliderLength - 10;
+            if (e.pageX <= o.sliderX) {
+                trans = o.sliderX - o.xabs;
+                o.xabs = o.sliderX;
+            } else if (moveTo >= endPoint) {
+                trans = endPoint - o.xabs;
+                o.xabs = endPoint;
+            } else {
+                trans = xdiff;
+                o.xabs += xdiff;
+            }
+            o.translate(trans, 0);
+            o.label.translate(trans, 0);
+            o.sliderPoint = Math.round(((o.xabs - o.sliderX) / ((o.sliderLength - 10) / o.snap)));
         }
-        o.translate(trans, 0);
-        o.label.translate(trans, 0);
-        o.sliderPoint = Math.round(((o.xabs - o.sliderX) / ((o.sliderLength - 10) / o.snap)));
     }
 }
