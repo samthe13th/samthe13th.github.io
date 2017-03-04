@@ -88,6 +88,7 @@
         })
     }
     function getMousePos(canvas, evt) {
+        console.log("get mouse pos")
         var rect = canvas.getBoundingClientRect();
         return {
           x: evt.clientX - rect.left,

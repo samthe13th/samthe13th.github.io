@@ -1,13 +1,18 @@
 var sliderWidth = 10
 var sliderRoundness = 8;
-var dragging = { o: null };
-var Slider = function (stage, x, y, l, m, drag) {
+var dragging = { o: null, id: null };
+var Slider = function (stage, x, y, l, m, drag, up) {
+    console.log("make slider");
     var bar, rtnSlider, label;
     var snap = m;
     var snapTo = [];
     bar = stage.rect(x, y, l, sliderWidth, sliderRoundness).attr({ fill: "white", opacity: 0.5, stroke: "none" });
-    rtnSlider = stage.rect(x, y - (sliderWidth / 2), 10, 20).attr({ fill: "white", stroke: "none" })
-        .drag(drag, function () { dragging = { o: this } }, function () { dragging = { o: null } });
+    rtnSlider = stage.rect(x, y - (sliderWidth / 2), 10, 20).attr({ fill: "white", stroke: "grey" })
+        .drag(drag, function () { dragging = { o: this } }, function () {
+            dragging = { o: null, id: null };
+            up();
+        });
+    rtnSlider.bar = bar;
     rtnSlider.sliderX = x;
     rtnSlider.sliderY = y;
     rtnSlider.sliderLength = l;
@@ -19,12 +24,24 @@ var Slider = function (stage, x, y, l, m, drag) {
     rtnSlider.setSnap = function (s) {
         rtnSlider.snap = s;
     }
-    rtnSlider.label = function (l) {
+    rtnSlider.setLabel = function (l) {
         rtnSlider.label = stage.text(rtnSlider.sliderX, (rtnSlider.sliderY - 20), "0 " + l).attr({ "font-size": 20 });
     }
     rtnSlider.hideSlider = function () {
         bar.hide();
         this.hide();
+    }
+    rtnSlider.setColor = function (c) {
+        if (Array.isArray(c)) {
+            var grad = "180"
+            for (var color in c) {
+                console.log(c[color]);
+                grad += "-" + c[color]
+            }
+            rtnSlider.bar.attr({ fill: grad });
+        } else {
+            rtnSlider.bar.attr({ fill: c });
+        }
     }
     rtnSlider.setSlider = function (p) {
         if (p === "reset") {
@@ -65,7 +82,9 @@ document.onmousemove = function (e) {
                 o.xabs += xdiff;
             }
             o.translate(trans, 0);
-            o.label.translate(trans, 0);
+            if (o.label) {
+                o.label.translate(trans, 0)
+            }
             o.sliderPoint = Math.round(((o.xabs - o.sliderX) / ((o.sliderLength - 10) / o.snap)));
         }
     }

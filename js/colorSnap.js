@@ -54,7 +54,6 @@ function makePalette() {
             .attr({ stroke: "#fff", "stroke-width": 3, fill: colors[i] })
             .mouseover(function () {
                 window.dropOn = this;
-                console.log("over segment " + this.id)
                 if (moveColor.css("visibility") === "visible") {
                     $("body").css("cursor", "cell");
                     this.attr({ "fill": moveColor.css("background-color") });
@@ -113,7 +112,6 @@ function addSeg(i, n) {
         })
         .mouseover(function () {
             $("body").css("cursor", "pointer");
-            console.log("over segment: ");
         })
         .mouseout(function () {
             $("body").css("cursor", "default");
@@ -263,7 +261,7 @@ function pickColor(c) {
         "visibility": "visible"
     })
 }
-function updateColorArray(x,c) {
+function updateColorArray(x, c) {
     var offset = 0;
     colors = [];
     for (var i = 0; i < (segments.length + 1); i++) {
@@ -286,8 +284,6 @@ function makeHoverSegs() {
                 $("body").css("cursor", "pointer");
                 this.attr({ "opacity": 1, "fill": mix });
                 this.mix = mix;
-                console.log("over hover seg " + this.id);
-                console.log("near seg " + segments[this.id].attrs.fill);
             })
             .mouseout(function () {
                 $("body").css("cursor", "default");
@@ -295,14 +291,14 @@ function makeHoverSegs() {
             })
             .click(function () {
                 segs++;
-                updatePalette(this.id,this.mix);
+                updatePalette(this.id, this.mix);
             });
         testHover.id = i;
         hoverSegs.push(testHover);
     }
 }
-function updatePalette(i,c) {
-    updateColorArray((i + 1),c);
+function updatePalette(i, c) {
+    updateColorArray((i + 1), c);
     deletePalette();
     makePalette();
     makeHoverSegs();
@@ -323,25 +319,15 @@ function updateSliders() {
     huePos = h / 2;
     satPos = s * 180;
     lumPos = l * 180;
-    hueSlider.transform(("T" + huePos + "," + 0));
-    hueSlider.xabs = 400 + huePos;
-    // lumSlider.transform(("T" + lumPos + "," + 0));
-    // lumSlider.xabs = 400 + lumPos;
-    // lumGrad = "180-#fff-#" + tinycolor({ h, s, l: 0.5 }).toHex() + "-#000";
-    // lumBar.attr({ gradient: lumGrad });
-    satSlider.transform(("T" + satPos + "," + 0));
-    satSlider.xabs = 400 + satPos;
+    lumGrad = "180-#fff-#" + tinycolor({ h, s, l: 0.5 }).toHex() + "-#000";
+    lumSlider.setColor(lumGrad);
     satGrad = "180-#" + tinycolor({ h, s: 1.0, l: 0.5 }).toHex() + "-grey";
-    satBar.attr({ gradient: satGrad });
+    satSlider.setColor(satGrad);
 }
 function updateSwatches(c) {
-    console.log("UPDATE SWATCHES")
-   // var c = preview.attrs.fill;
     var colors = getCombinations(c);
-    console.log("colors: " + JSON.stringify(colors));
     var count = 0;
     for (var a in colors) {
-        console.log("a: " + a);
         for (var i = 0; i < colors[a].length; i++) {
             palette[count].attr({ "fill": colors[a][i] })
             count++;
@@ -368,7 +354,6 @@ function blendContainer(a, b, c, d, fillable) {
         .attr({ "stroke": "#e8eef7", "stroke-width": 3, "fill": "white" })
     if (fillable) {
         bc.mouseover(function () {
-            console.log("over");
             window.dropOn = this;
             if (moveColor.css("visibility") === "visible") {
                 $("body").css("cursor", "cell");
@@ -394,11 +379,6 @@ function blendContainer(a, b, c, d, fillable) {
                 blendM.paint = mix;
                 moveColor.css("visibility", "hidden");
             } else {
-                // preview.attr("fill", this.attrs.fill);
-                // hexText.attr('text', this.attrs.fill);
-                // globalHsl = tinycolor(this.attrs.fill).toHsl();
-                // updateSliders();
-                // updateSwatches("#" + tinycolor(this.attrs.fill.toHex()));
                 pickColor(this.attrs.fill);
             }
         })
@@ -414,10 +394,6 @@ function mixColors(s1, s2, t) {
     blend.g = Math.round(Math.sqrt((1 - t) * Math.pow(s1.g, 2) + 0.5 * Math.pow(s2.g, 2)));
     blend.b = Math.round(Math.sqrt((1 - t) * Math.pow(s1.b, 2) + 0.5 * Math.pow(s2.b, 2)));
     return ("#" + tinycolor(blend).toHex());
-}
-function plusSlider() {
-    hueSlider.translate(20, 0);
-    hueSlider.xabs += 20;
 }
 paper.rect(padding - 5, padding - 15, 380, 365).attr({
     stroke: "#ebedf1",
@@ -441,114 +417,63 @@ makeHoverSegs();
 drawBlender();
 colorGrad = ["#f00", "#ff5600", "#ffab00", "#feff00", "#a9ff00", "#56ff00", "#0f0", "#00ff54", "#00ffa8", "#0ff", "#00abff", "#0056ff", "#00f", "#5400ff", "#fd00ff", "#ff00ac", "#ff0053", "#ff0001"];
 hueString = getColorGrad();
-// lumBar = paper.rect(padding + sliderX, 100, sliderLength, sliderWidth, sliderRoundness).attr({
-//     stroke: "#lightgrey",
-//     fill: "180-#fff-#000"
-// });
-hueBar = paper.rect(padding + sliderX, 130, sliderLength, sliderWidth, sliderRoundness).attr({
-    stroke: "#lightgrey",
-    fill: hueString
-});
 satColor = tinycolor("hsl " + tinycolor(preview.attrs.fill).toHsl().h + " 1.0 0.9").toHex();
 satGrad = "180-#" + satColor + "-grey"
-satBar = paper.rect(padding + sliderX, 160, sliderLength, sliderWidth, sliderRoundness).attr({
-    stroke: "#white",
-    fill: satGrad
-});
 mixColors(tinycolor("blue").toRgb(), tinycolor("red").toRgb(), 0.5);
-// lumSlider = paper.rect(400, 95, 10, 20).attr({ fill: "white" })
-//     .mousedown(function () {
-//         dragging = { o: this, id: "lum" }
-//     })
-// lumSlider.update = function () {
-//     globalHsl.l = (this.xabs - 400) / 180;
-//     newColor = "#" + tinycolor(globalHsl).toHex();
-//     preview.attr("fill", newColor);
-//     hexText.attr('text', newColor);
-// }
-lumSlider = Slider(paper,)
-hueSlider = paper.rect(400, 125, 10, 20).attr({ fill: "white" })
-    .mousedown(function () {
-        dragging = { o: this, id: "hue" };
-    })
-hueSlider.update = function () {
+lumdrag = function () {
+    globalHsl.l = (this.xabs - 400) / this.snap;
+    newColor = "#" + tinycolor(globalHsl).toHex();
+    preview.attr("fill", newColor);
+    hexText.attr('text', newColor);
+}
+var lumSlider, hueSlider, satSlider;
+var updateThings;
+updateThings = function () {
+    updateSliders();
+    updateSwatches("#" + tinycolor(preview.attrs.fill).toHex());
+}
+lumSlider = Slider(paper, padding + sliderX, 100, sliderLength, 180, lumdrag, updateThings);
+lumSlider.setColor("180-#fff-#000");
+hueUpdate = function () {
     var newColor;
     globalHsl.h = (this.xabs - 400) * 2;
     newColor = "#" + tinycolor(globalHsl).toHex();
     preview.attr("fill", newColor);
     hexText.attr('text', newColor);
 }
-hueSlider.xpos = 0;
-satSlider = paper.rect(400, 155, 10, 20).attr({ fill: "white" })
-    .mousedown(function () {
-        dragging = { o: this, id: "sat" };
-    })
-satSlider.update = function () {
-    globalHsl.s = (this.xabs - 400) / 180;
+hueSlider = Slider(paper, padding + sliderX, 130, sliderLength, 180, hueUpdate, updateThings);
+hueSlider.setColor(colorGrad);
+satUpdate = function () {
+    globalHsl.s = (this.xabs - 400) / this.snap;
     newColor = "#" + tinycolor(globalHsl).toHex();
     preview.attr("fill", newColor);
     hexText.attr('text', newColor);
 }
-hueSlider.xabs = 400;
-satSlider.xabs = 400;
-//lumSlider.xabs = 400;
+satSlider = Slider(paper, padding + sliderX, 160, sliderLength, 180, satUpdate, updateThings)
+satSlider.setColor(satGrad);
 preview.attr("fill", "lightgreen");
 hexText.attr('text', "#" + tinycolor("#90ee90").toHex());
 globalHsl = tinycolor("lightgreen").toHsl();
 updateSliders();
 document.onmouseup = function (e) {
-    if (dragging.id === "hue" || dragging.id === "sat" || dragging.id === "lum") {
-        dragging = { o: null, id: null };
-        updateSliders();
-        updateSwatches("#" + tinycolor(preview.attrs.fill).toHex());
-    }
     if (eyedropper) {
-        // makeSwatches(pickpxl);
-        // preview.attr("fill", pickpxl);
-        // hexText.attr('text', pickpxl);
-        // globalHsl = tinycolor(pickpxl).toHsl();
-        // updateSliders();
-        // updateSwatches();
-         pickColor(pickpxl);
+        pickColor(pickpxl);
     }
 }
-document.onmousemove = function (e) {
-    var xdiff;
-    var moveTo;
-    var mousePos = getMousePos(canvas, e);
-    mx = mousePos.x;
-    my = mousePos.y;
-    amx = e.pageX;
-    amy = e.pageY;
-    $("#move-color").css({
-        left: e.pageX + 15,
-        top: e.pageY + 15
-    })
-    getPxlData(mx, my);
-    if ((mx - picoff.x) < pwidth && (mx - picoff.x) > 0 && (my - picoff.y) > 0 && (my - picoff.y) < pheight) {
-        eyedropper = true;
-    } else {
-        eyedropper = false;
-    }
-    if (dragging && dragging.o) {
-        var o = dragging.o;
-        if (dragging.id === "hue" || dragging.id === "sat" || dragging.id === "lum") {
-            o.update();
-            xdiff = e.pageX - o.xabs;
-            moveTo = o.xabs + xdiff;
-            var endPoint = 400 + sliderLength;
-            if (moveTo <= 400) {
-                var toLeft = 400 - o.xabs;
-                o.translate(toLeft, 0);
-                o.xabs = 400;
-            } else if (moveTo >= endPoint) {
-                var toRight = endPoint - o.xabs;
-                o.translate(toRight, 0);
-                o.xabs = endPoint;
-            } else {
-                o.translate(xdiff, 0);
-                o.xabs += xdiff;
-            }
+$("#right").mousemove(function (e) {
+    if (true) {
+        var mousePos = getMousePos(canvas, e);
+        mx = mousePos.x;
+        my = mousePos.y;
+        $("#move-color").css({
+            left: e.pageX + 15,
+            top: e.pageY + 15
+        })
+        getPxlData(mx, my);
+        if ((mx - picoff.x) < pwidth && (mx - picoff.x) > 0 && (my - picoff.y) > 0 && (my - picoff.y) < pheight) {
+            eyedropper = true;
+        } else {
+            eyedropper = false;
         }
     }
-}
+});
