@@ -1,0 +1,288 @@
+<html>
+
+<head>
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+</head>
+
+<body>
+    <button id="palette-btn" onclick="toggleTable()">Palette</button>
+    <svg id="move-color"></svg>
+    <div id="table-window">
+        <h4>Table Mode</h4>
+        <div class="table-div">
+            <table id="color-table">
+                <tr>
+                    <th>Swatch</th>
+                    <th>Hex</th>
+                    <th><button id="RGBbtn" onclick="changeToRgb()">RGB</button><button id="HSLbtn" onclick="changeToHsl()">HSL</button></th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="colormachine">
+        <div id="left"></div>
+        <img class="bg-image"></img>
+        <div id="right">
+            <h2 class='customTitle'>Upload Image</h2>
+            <div id="addPicPanel1">
+                <div id="pickcolorpreview"></div>
+                <div id="idropdiv">
+                    <img id="idrop" src="img/icons/idropper.png" width: "30px" height: "30px"></img>
+                </div>
+                <input id="inp" type='file'>
+            </div>
+            <p id="b64"></p>
+            <img id="myImage" />
+            <canvas id="myCanvas" width="300" height="300"></canvas>
+        </div>
+</body>
+
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="js/raphael.min.js"></script>
+<script src="js/tinycolor.js"></script>
+<script src="js/colorSnap.js"></script>
+<script>
+    var colorMode = "RGB";
+    var mypic = new Image();
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+    var f, pwidth, pheight;
+    var pickpxl = "";
+    var eyedropper = false; 
+    var picoff = { x: 0, y: 0 };
+    function readFile() {
+        if (this.files && this.files[0]) {
+            var FR = new FileReader();
+            FR.addEventListener("load", function (e) {
+               // document.getElementById("myImage").src = e.target.result;
+               // document.getElementById("b64").innerHTML = e.target.result;
+                mypic.src = e.target.result;
+                setUpCanvas();
+                getPxlData(50,50);
+            });
+            FR.readAsDataURL(this.files[0]);
+        }
+    }
+    document.getElementById("inp").addEventListener("change", readFile);
+    function setUpCanvas(){
+        if (mypic.width > mypic.height){
+            f = 300 / mypic.width;
+        } else {
+            f = 300 / mypic.height;
+        }
+        pwidth = mypic.width * f; 
+        pheight = mypic.height * f;
+        picoff.x = (300 - pwidth) / 2;
+        picoff.y = (300 - pheight) / 2;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(mypic, picoff.x, picoff.y, pwidth, pheight);
+    }
+    function getPxlData(xpxl,ypxl) {
+        var idata = ctx.getImageData(xpxl,ypxl, 1, 1).data;
+        pickpxl = "#" + tinycolor({r: idata["0"], g: idata["1"], b: idata["2"]}).toHex();
+        $("#pickcolorpreview").css({
+            "background-color": pickpxl
+        })
+    }
+    function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top 
+        };
+      }
+      function toggleTable(){
+          console.log("toggleTable");
+          var mytable = $("#table-window");
+          if (mytable.css("visibility") === "hidden"){
+                mytable.css("visibility","visible");
+          } else {
+               mytable.css("visibility","hidden");
+          }
+                    updateTable();
+      }
+      function updateTable(){
+          var mytable = $("#color-table");
+          var colorObj;
+          mytable.html("<tr><th></th><th>Swatch</th><th>Hex</th><th><button id='RGBbtn' onclick='changeToRgb()'>RGB</button><button id='HSLbtn' onclick='changeToHsl()'>HSL</button></th></tr>");
+          for (var i = 0; i < segments.length; i++){
+              var rgb_obj = "rgb(" + tinycolor( segments[i].attrs.fill ).toRgb().r + ", " + tinycolor( segments[i].attrs.fill ).toRgb().g + ", " + tinycolor( segments[i].attrs.fill ).toRgb().b + ")";
+              var hsl_obj = "hsl(" + Math.round(tinycolor( segments[i].attrs.fill ).toHsl().h) + ", " + Math.round(100 * tinycolor( segments[i].attrs.fill ).toHsl().s) + "%, " + Math.round(100 * tinycolor( segments[i].attrs.fill ).toHsl().l) + "%)";
+              console.log("update table " + i);
+              if (colorMode === "HSL"){
+                  colorObj = hsl_obj;
+              } else {
+                  colorObj = rgb_obj;
+              }
+              mytable.append("<tr>"
+              + "<td><button class='delete-swatch' onclick='delete-swatch()'>X</button></td>"
+              + "<td><div class='table-swatch' style='background-color: " + segments[i].attrs.fill + "'></div></td>" 
+              + "<td>" + "#" + tinycolor( segments[i].attrs.fill ).toHex() + "</td>"
+              + "<td>" + colorObj + "</td>"
+                  + "</tr>"
+              )
+          }
+      }
+      function changeToHsl(){
+          colorMode = "HSL";
+          updateTable();
+      }
+      function changeToRgb(){
+          colorMode = "RGB"
+          updateTable();
+      }
+</script>
+
+<style>
+    .table-swatch {
+        width: 30px;
+        height: 30px;
+        border-color: grey;
+    }
+    
+    #move-color {
+        border-style: solid;
+        border-color: white;
+        background-color: white;
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        left: 200px;
+        top: 100px;
+        z-index: 100;
+        visibility: hidden;
+    }
+    
+    #table-window {
+        z-index: 99;
+        position: absolute;
+        width: 374px;
+        height: 350px;
+        margin-top: 50px;
+        border-style: none;
+        background-color: white;
+        visibility: hidden;
+    }
+    
+    #color-table {
+        height: 300px;
+    }
+    
+    .table-div {
+        height: 300px;
+        overflow-y: scroll;
+    }
+    
+    .customTitle {
+        margin-top: 35px;
+        color: grey;
+    }
+    
+    #left {
+        border-style: none;
+        display: inline-block;
+        float: left;
+        margin-left: 0px;
+    }
+    
+    #right {
+        text-align: center;
+        border-style: none;
+        background-color: white;
+        display: inline-block;
+        float: left;
+        color: red;
+        width: 400px;
+        height: 504px;
+        margin-left: 20px;
+    }
+    
+    #image-form {
+        margin-top: -20;
+        color: black;
+        display: block;
+    }
+    
+    #colormachine {
+        margin-left: 0px;
+        margin-top: 50px;
+    }
+    
+    #pickcolorpreview {
+        float: left;
+        width: 30px;
+        height: 30px;
+        color: black;
+        border-color: black;
+        margin: 8px;
+        background-color: white;
+    }
+    
+    #myImage {
+        display: block;
+    }
+    
+    #myCanvas {
+        background-color: #e8eef7;
+        border-radius: 10px;
+        margin: 10px;
+        cursor: crosshair;
+    }
+    
+    #addPicPanel1 {
+        background-color: white;
+        border-color: white;
+        border-radius: 10px;
+        border-style: solid;
+        height: 50px;
+        width: 300px;
+        margin: 15px;
+        margin-left: 55px;
+    }
+    
+    #inp {
+        color: black;
+        border-style: none;
+        margin-top: 12px;
+        margin-left: 10px;
+        width: 200px;
+    }
+    
+    #idropdiv {
+        display: block;
+        float: left;
+        border-style: none;
+        margin-top: 8px;
+        margin-right: 8px;
+        width: 30px;
+        height: 30px;
+    }
+    
+    #idrop {
+        margin-left: -10px;
+        width: 30px;
+        height: 30px;
+    }
+    
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    th,
+    td {
+        text-align: left;
+        padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #f2f2f2
+    }
+    
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
