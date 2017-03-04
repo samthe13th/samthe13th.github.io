@@ -1,13 +1,13 @@
 var sliderWidth = 10
 var sliderRoundness = 8;
 var dragging = { o: null };
-var Slider = function (stage, x, y, l, m, drag, on, off) {
+var Slider = function (stage, x, y, l, m, drag) {
     var bar, rtnSlider, label;
     var snap = m;
     var snapTo = [];
     bar = stage.rect(x, y, l, sliderWidth, sliderRoundness).attr({ fill: "white", opacity: 0.5, stroke: "none" });
     rtnSlider = stage.rect(x, y - (sliderWidth / 2), 10, 20).attr({ fill: "white", stroke: "none" })
-        .drag(drag, on, off);
+        .drag(drag, function () { dragging = { o: this } }, function () { dragging = { o: null } });
     rtnSlider.sliderX = x;
     rtnSlider.sliderY = y;
     rtnSlider.sliderLength = l;

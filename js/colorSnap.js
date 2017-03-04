@@ -325,10 +325,10 @@ function updateSliders() {
     lumPos = l * 180;
     hueSlider.transform(("T" + huePos + "," + 0));
     hueSlider.xabs = 400 + huePos;
-    lumSlider.transform(("T" + lumPos + "," + 0));
-    lumSlider.xabs = 400 + lumPos;
-    lumGrad = "180-#fff-#" + tinycolor({ h, s, l: 0.5 }).toHex() + "-#000";
-    lumBar.attr({ gradient: lumGrad });
+    // lumSlider.transform(("T" + lumPos + "," + 0));
+    // lumSlider.xabs = 400 + lumPos;
+    // lumGrad = "180-#fff-#" + tinycolor({ h, s, l: 0.5 }).toHex() + "-#000";
+    // lumBar.attr({ gradient: lumGrad });
     satSlider.transform(("T" + satPos + "," + 0));
     satSlider.xabs = 400 + satPos;
     satGrad = "180-#" + tinycolor({ h, s: 1.0, l: 0.5 }).toHex() + "-grey";
@@ -441,10 +441,10 @@ makeHoverSegs();
 drawBlender();
 colorGrad = ["#f00", "#ff5600", "#ffab00", "#feff00", "#a9ff00", "#56ff00", "#0f0", "#00ff54", "#00ffa8", "#0ff", "#00abff", "#0056ff", "#00f", "#5400ff", "#fd00ff", "#ff00ac", "#ff0053", "#ff0001"];
 hueString = getColorGrad();
-lumBar = paper.rect(padding + sliderX, 100, sliderLength, sliderWidth, sliderRoundness).attr({
-    stroke: "#lightgrey",
-    fill: "180-#fff-#000"
-});
+// lumBar = paper.rect(padding + sliderX, 100, sliderLength, sliderWidth, sliderRoundness).attr({
+//     stroke: "#lightgrey",
+//     fill: "180-#fff-#000"
+// });
 hueBar = paper.rect(padding + sliderX, 130, sliderLength, sliderWidth, sliderRoundness).attr({
     stroke: "#lightgrey",
     fill: hueString
@@ -456,16 +456,17 @@ satBar = paper.rect(padding + sliderX, 160, sliderLength, sliderWidth, sliderRou
     fill: satGrad
 });
 mixColors(tinycolor("blue").toRgb(), tinycolor("red").toRgb(), 0.5);
-lumSlider = paper.rect(400, 95, 10, 20).attr({ fill: "white" })
-    .mousedown(function () {
-        dragging = { o: this, id: "lum" }
-    })
-lumSlider.update = function () {
-    globalHsl.l = (this.xabs - 400) / 180;
-    newColor = "#" + tinycolor(globalHsl).toHex();
-    preview.attr("fill", newColor);
-    hexText.attr('text', newColor);
-}
+// lumSlider = paper.rect(400, 95, 10, 20).attr({ fill: "white" })
+//     .mousedown(function () {
+//         dragging = { o: this, id: "lum" }
+//     })
+// lumSlider.update = function () {
+//     globalHsl.l = (this.xabs - 400) / 180;
+//     newColor = "#" + tinycolor(globalHsl).toHex();
+//     preview.attr("fill", newColor);
+//     hexText.attr('text', newColor);
+// }
+lumSlider = Slider(paper,)
 hueSlider = paper.rect(400, 125, 10, 20).attr({ fill: "white" })
     .mousedown(function () {
         dragging = { o: this, id: "hue" };
@@ -490,7 +491,7 @@ satSlider.update = function () {
 }
 hueSlider.xabs = 400;
 satSlider.xabs = 400;
-lumSlider.xabs = 400;
+//lumSlider.xabs = 400;
 preview.attr("fill", "lightgreen");
 hexText.attr('text', "#" + tinycolor("#90ee90").toHex());
 globalHsl = tinycolor("lightgreen").toHsl();
