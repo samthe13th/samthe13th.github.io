@@ -68,8 +68,8 @@ function getMousePos(canvas, evt) {
     console.log("get mouse pos")
     var rect = canvas.getBoundingClientRect();
     return {
-        x: evt.clientX - rect.left,
-        y: evt.clientY - rect.top
+        x: evt.pageX - rect.left,
+        y: evt.pageY - rect.top
     };
 }
 function toggleTable() {
@@ -421,6 +421,7 @@ function updateSliders() {
     lumSlider.setColor(lumGrad);
     satGrad = "180-#" + tinycolor({ h, s: 1.0, l: 0.5 }).toHex() + "-grey";
     satSlider.setColor(satGrad);
+    //lumSlider.setSlider(90)
 }
 function updateSwatches(c) {
     var colors = getCombinations(c);
