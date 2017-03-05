@@ -1,7 +1,7 @@
 var preview, hexText, hueString, colorGrad, lumBar, hueBar, satColor, satGrad, satBar, blendL, blendR, blendM;
 var r = 160;
 var r2 = 80;
-var segs = 3;
+var segs = 6;
 var padding = 0;
 var offx = 25;
 var offy = 15;
@@ -16,7 +16,7 @@ var hoverSegs = paper.set();
 var palette = paper.set();
 var moveColor = $("#move-color");
 var blank = "#e8eef7";
-var colors = [blank, blank, blank];
+var colors = [blank, blank, blank, blank, blank, blank];
 var dragging = { o: null, id: null }
 var sliderWidth = 10
 var sliderRoundness = 8;
@@ -145,6 +145,7 @@ function makePalette() {
             .attr({ stroke: "#fff", "stroke-width": 3, fill: colors[i], id: i })
             .mouseover(function () {
                 console.log("over segment " + this.id)
+                segments[this.id].attr({"stroke-width": 10 });
                 window.dropOn = this;
                 if (moveColor.css("visibility") === "visible") {
                     $("body").css("cursor", "cell");
@@ -157,6 +158,7 @@ function makePalette() {
                 $("body").css("cursor", "default");
                 this.attr({ "fill": this.paint });
                 window.dropOn = null;
+                segments[this.id].attr({"stroke-width": 3 });
             })
             .mouseup(function () {
                 if (moveColor.css("visibility") === "visible") {
@@ -195,26 +197,27 @@ function deletePalette() {
     })
     segments = [];
 }
-function addSeg(i, n) {
-    var defaultColor = blank;
-    var newP = paper.path(makeSeg(i, n))
-        .attr({ stroke: "#ebedf1", "stroke-width": 3, fill: defaultColor, id: ("seg" + i) })
-        .click(function () {
-            preview.attr("fill", this.attrs.fill);
-        })
-        .mouseover(function () {
-            console.log("over segment ");
-            $("body").css("cursor", "pointer");
-        })
-        .mouseout(function () {
-            $("body").css("cursor", "default");
-        })
-    newP.paint = defaultColor;
-    newP.fillable = "true";
-    newP.id = i;
-    segments.push(newP);
-    return newP
-}
+// function addSeg(i, n) {
+//     var defaultColor = blank;
+//     var newP = paper.path(makeSeg(i, n))
+//         .attr({ stroke: "#ebedf1", "stroke-width": 3, fill: defaultColor, id: ("seg" + i) })
+//         .click(function () {
+//             preview.attr("fill", this.attrs.fill);
+//         })
+//         .mouseover(function () {
+//             segments[this.id].attr({"fill":"red" });
+//             console.log("2 over segment " + this.id);
+//             $("body").css("cursor", "pointer");
+//         })
+//         .mouseout(function () {
+//             $("body").css("cursor", "default");
+//         })
+//     newP.paint = defaultColor;
+//     newP.fillable = "true";
+//     newP.id = i;
+//     segments.push(newP);
+//     return newP
+// }
 function makeSeg(i, n) {
     var path = "M" + (pcX + (r * Math.cos((i - 1) * 2 * Math.PI / n))) + " " + (pcY + (r * Math.sin((i - 1) * 2 * Math.PI / n))) + " "
         + "A " + r + " " + r + ", 0, 0, 1," + " " + (pcX + (r * Math.cos(i * 2 * Math.PI / n))) + " " + (pcY + (r * Math.sin(i * 2 * Math.PI / n))) + " "
@@ -226,7 +229,7 @@ function makeSeg(i, n) {
 function makeHoverSeg(i, n) {
     var off = 5;
     var div = 3;
-    var off2 = (Math.PI / 16);
+    var off2 = (Math.PI / 20);
     var path = "M" + (pcX + ((r + off) * Math.cos((i * 2 * Math.PI / n) - off2))) + " " + (pcY + ((r + off) * Math.sin((i * 2 * Math.PI / n) - off2))) + " "
         + "A " + (r + off) + " " + (r + off) + ", 0, 0, 1," + " " + (pcX + ((r + off) * Math.cos((i * 2 * Math.PI / n) + off2))) + " " + (pcY + ((r + off) * Math.sin((i * 2 * Math.PI / n) + off2))) + " "
         + "L " + (pcX + ((r2 - off) * Math.cos((i * 2 * Math.PI / n) + off2))) + " " + (pcY + ((r2 - off) * Math.sin((i * 2 * Math.PI / n) + off2))) + " "
@@ -336,19 +339,19 @@ function makeSwatch(color, x, y) {
     };
     return swatch;
 }
-function getNewPalette(x) {
-    var newSet = {};
-    var offset = 0;
-    for (var i = 0; i < (segments.length + 1); i++) {
-        if (i === x) {
-            offset = 1;
-            newSet[i] = addSeg(i, segments.length);
-        } else {
-            newSet[i] = segments[i - offset];
-        }
-    }
-    return newSet;
-}
+// function getNewPalette(x) {
+//     var newSet = {};
+//     var offset = 0;
+//     for (var i = 0; i < (segments.length + 1); i++) {
+//         if (i === x) {
+//             offset = 1;
+//             newSet[i] = addSeg(i, segments.length);
+//         } else {
+//             newSet[i] = segments[i - offset];
+//         }
+//     }
+//     return newSet;
+// }
 function pickColor(c) {
     moveColor.css({
         "background-color": c,
@@ -380,18 +383,18 @@ function makeHoverSegs() {
                 }
                 var mix = mixColors(tinycolor(segL.attrs.fill).toRgb(), tinycolor(segR.attrs.fill).toRgb(), 0.5);
                 $("body").css("cursor", "pointer");
-                this.attr({ "opacity": 1, "fill": mix });
+                this.attr({ "opacity": 1, "fill": mix, "stroke-width": 8 });
                 this.mix = mix;
             })
             .mouseout(function () {
                 $("body").css("cursor", "default");
-                this.attr({ "opacity": 0 })
+                this.attr({ "opacity": 0, "stroke-width": 5 })
             })
             .click(function () {
                 console.log("segs length: " + segs);
                 if (segs < maxSegs) {
                     segs++;
-                                    updatePalette(this.id, this.mix);
+                    updatePalette(this.id, this.mix);
                 } else {
                     alert("Max 12 segments!")
                 }
