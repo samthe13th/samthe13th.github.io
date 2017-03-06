@@ -67,8 +67,8 @@ function getPxlData(xpxl, ypxl) {
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
     return {
-        x: evt.pageX - rect.left,
-        y: evt.pageY - rect.top
+        x: evt.pageX - window.scrollX - rect.left,
+        y: evt.pageY - window.scrollY - rect.top
     };
 }
 function toggleTable() {
