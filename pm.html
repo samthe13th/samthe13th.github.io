@@ -1,40 +1,44 @@
 <html>
 
 <head>
+    <div id="loadOverlay" style="background-color:#78174c ;background-image: url('http://i.stack.imgur.com/MnyxU.gif'); background-repeat: no-repeat; background-position: center; position:absolute; top:0px; left:0px; width:100%; height:100%; z-index:2000;"></div>
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
 </head>
-<div id="header"><span id="sitetitle">Palette Machine</span>   |   by Sam MacKinnon <em>(beta)</em></div>
+<div id="header"><span id="sitetitle">Palette Machine</span> | by Sam MacKinnon <em>(beta)</em></div>
+
 <body>
     <!--<button id="palette-btn" onclick="toggleTable()">Palette</button>-->
-    <svg id="move-color"></svg>
-    <div id="table-window">
-        <h4>Table Mode</h4>
-        <div class="table-div">
-            <table id="color-table">
-                <tr>
-                    <th>Swatch</th>
-                    <th>Hex</th>
-                    <th><button id="RGBbtn" onclick="changeToRgb()">RGB</button><button id="HSLbtn" onclick="changeToHsl()">HSL</button></th>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div id="colormachine">
-        <div id="left"></div>
-        <img class="bg-image"></img>
-        <div id="right">
-            <h2 class='customTitle'>Upload Image</h2>
-            <div id="addPicPanel1">
-                <div id="pickcolorpreview"></div>
-                <div id="idropdiv">
-                    <img id="idrop" src="img/icons/idropper.png" width: "30px" height: "30px"></img>
+    <div id="fullpage">
+        <div id="colormachine">
+            <div id="left"></div>
+            <img class="bg-image"></img>
+            <div id="right">
+                <h2 class='customTitle'>Upload Image</h2>
+                <div id="addPicPanel1">
+                    <div id="pickcolorpreview"></div>
+                    <div id="idropdiv">
+                        <img id="idrop" src="img/icons/idropper.png" width: "30px" height: "30px"></img>
+                    </div>
+                    <input id="inp" type='file'>
                 </div>
-                <input id="inp" type='file'>
+                <p id="b64"></p>
+                <img id="myImage" />
+                <canvas id="myCanvas" width="300" height="300"></canvas>
             </div>
-            <p id="b64"></p>
-            <img id="myImage" />
-            <canvas id="myCanvas" width="300" height="300"></canvas>
+            <svg id="move-color"></svg>
+            <div id="table-window">
+                <h4>Table Mode</h4>
+                <div class="table-div">
+                    <table id="color-table">
+                        <tr>
+                            <th>Swatch</th>
+                            <th>Hex</th>
+                            <th><button id="RGBbtn" onclick="changeToRgb()">RGB</button><button id="HSLbtn" onclick="changeToHsl()">HSL</button></th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
 </body>
 
@@ -52,6 +56,7 @@
     #sitetitle {
         font-size: 20px;
     }
+    
     #header {
         background-color: #78174c;
         width: 100%;
@@ -60,6 +65,7 @@
         color: white;
         padding: 10px;
     }
+    
     .table-swatch {
         width: 30px;
         height: 30px;
@@ -129,6 +135,7 @@
     }
     
     #colormachine {
+        display: none;
         height: 520px;
         width: 1025px;
         display: block;
