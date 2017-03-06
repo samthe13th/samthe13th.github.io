@@ -141,7 +141,7 @@ function makePalette() {
         var newP = paper.path(makeSeg(i, colors.length))
             .attr({ stroke: "#fff", "stroke-width": 3, fill: colors[i], id: i })
             .mouseover(function () {
-                segments[this.id].attr({"stroke-width": 10 });
+                segments[this.id].attr({ "stroke-width": 7 });
                 window.dropOn = this;
                 if (moveColor.css("visibility") === "visible") {
                     $("body").css("cursor", "cell");
@@ -154,14 +154,23 @@ function makePalette() {
                 $("body").css("cursor", "default");
                 this.attr({ "fill": this.paint });
                 window.dropOn = null;
-                segments[this.id].attr({"stroke-width": 3 });
+                if (segments[this.id].select !== true) {
+                    segments[this.id].attr({ "stroke-width": 3 });
+                }
             })
             .mouseup(function () {
                 if (moveColor.css("visibility") === "visible") {
                     this.paint = moveColor.css("background-color");
                     $("body").css("cursor", "pointer");
-                    moveColor.css("visibility", "hidden")
+                    moveColor.css("visibility", "hidden");
                 } else {
+                    segments.forEach(function (s) {
+                        s.attr({ "stroke-width": 3 });
+                        s.select = false;
+                    })
+                    segments[this.id].select = true;
+                    segments[this.id].attr({ "stroke-width": 10 });
+                    console.log("selected");
                     var newColor = "#" + tinycolor(this.attrs.fill).toHex();
                     preview.attr("fill", newColor);
                     hexText.attr('text', newColor);
@@ -181,6 +190,7 @@ function makePalette() {
         newP.paint = colors[i];
         newP.id = i;
         newP.fillable = true;
+        newP.select = false;
         segments.push(newP);
     }
 }
@@ -369,6 +379,19 @@ function updatePalette(i, c) {
     makePalette();
     makeHoverSegs();
 }
+function deleteSeg() {
+    segments.forEach(function (e) {
+        if (e.select) {
+            console.log("delete seg");
+            segs--;
+            segments[e.id].remove();
+            colors.splice(e.id, 1);
+            deletePalette();
+            makePalette();
+            makeHoverSegs();
+        }
+    })
+}
 function updateSliders() {
     var h = globalHsl.h;
     var s = globalHsl.s;
@@ -519,6 +542,12 @@ $(function () {
 $("body").mouseup(function (e) {
     if (eyedropper) {
         pickColor(pickpxl);
+    };
+    if (window.dropOn === null) {
+        segments.forEach(function (s) {
+            s.attr({ "stroke-width": 3 });
+            s.select = false;
+        })
     }
 })
     .mousemove(function (e) {
@@ -538,3 +567,8 @@ $("body").mouseup(function (e) {
             }
         }
     });
+document.addEventListener('keydown', function (event) {
+    if (event.keyCode === 8 || event.keyCode === 46) {
+        deleteSeg();
+    }
+});
