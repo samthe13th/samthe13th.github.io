@@ -3,7 +3,9 @@ var sliderRoundness = 8;
 var dragging = { o: null, id: null };
 var xoffset;
 var Slider = function (stage, x, y, l, m, drag, up) {
-    xoffset = document.getElementById("colormachine").getBoundingClientRect().left + window.scrollX;
+    //xoffset = document.getElementById(parentId).getBoundingClientRect().left + window.scrollX;
+    console.log("")
+    xoffset = stage.canvas.parentNode.offsetLeft + window.scrollX;
     var bar, rtnSlider, label;
     var snap = m;
     var snapTo = [];
@@ -18,6 +20,7 @@ var Slider = function (stage, x, y, l, m, drag, up) {
             $("body").css("cursor", "default");
             up();
         });
+    rtnSlider.stage = stage;
     rtnSlider.x = x;
     rtnSlider.bar = bar;
     rtnSlider.sliderX = Math.round(x + xoffset);
@@ -67,8 +70,8 @@ var Slider = function (stage, x, y, l, m, drag, up) {
     return rtnSlider;
 }
 function calcSliderX(o){
-    xoffset = document.getElementById("colormachine").getBoundingClientRect().left + window.scrollX;
-    console.log("slider.x = " + o.x);
+   // xoffset = document.getElementById(o.parentId).getBoundingClientRect().left + window.scrollX;
+    xoffset = o.stage.canvas.parentNode.offsetLeft + window.scrollX;
     console.log("xoffset " + xoffset);
     o.sliderX = Math.round(o.x + xoffset);
     console.log("calc slider x: " + o.sliderX);

@@ -189,7 +189,7 @@ function drawRuler(id, x, y) {
         }
     }
 }
-var slider = Slider(sandbox, 100, 460, 430, maxTime, drag, function(){console.log("up!")});
+var slider = Slider(sandbox, "svgstage", 100, 460, 430, maxTime, drag, function(){console.log("up!")});
 slider.label = sandbox.text(slider.sliderX, (slider.sliderY - 20), "0 sec").attr({ "font-size": 16, "fill": "white" });
 var params_btn_base = sandbox.rect(60, 25, 120, 50, 12)
     .attr({ "font-size": 12, "stroke": "white", "fill": "#5ccb58", "stroke-width": 2 })
@@ -278,15 +278,15 @@ function makeScreen2() {
         starty = ground - (height * mtopxl);
         parameters.height = height;
     };
-    var angle_slider = Slider(screen2, 90, param_offset_y + 40, 300, 180, drag_angle, function(){console.log("up!")});
+    var angle_slider = Slider(screen2, "svgstage", 90, param_offset_y + 40, 300, 180, drag_angle, function(){console.log("up!")});
     angle_slider.label = screen2.text(angle_slider.sliderX, (angle_slider.sliderY - 20), parameters.angle + ' degs').attr({ "font-size": 14 });
     angle_slider.setSlider(parameters.angle);
     arrow.rotate(parameters.angle, cx, (csize / 2));
     arrow.angle = parameters.angle;
-    var height_slider = Slider(screen2, 90, (param_offset_y + 120), 300, 100, drag_height,  function(){console.log("up!")});
+    var height_slider = Slider(screen2, "svgstage", 90, (param_offset_y + 120), 300, 100, drag_height,  function(){console.log("up!")});
     height_slider.label = screen2.text(height_slider.sliderX, (height_slider.sliderY - 20), parameters.height + " m").attr({ "font-size": 14 });
     height_slider.setSlider(parameters.height);
-    var speed_slider = Slider(screen2, 90, (param_offset_y + 200), 300, 40, drag_speed,  function(){console.log("up!")});
+    var speed_slider = Slider(screen2, "svgstage", 90, (param_offset_y + 200), 300, 40, drag_speed,  function(){console.log("up!")});
     speed_slider.label = screen2.text(speed_slider.sliderX, (speed_slider.sliderY - 20), parameters.speed + " m/s").attr({ "font-size": 14 });
     speed_slider.setSlider(parameters.speed);
     var close_circle = screen2.rect(470, 350, 60, 40, 10).attr({ fill: "white", stroke: "none" });
