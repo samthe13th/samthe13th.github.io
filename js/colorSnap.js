@@ -163,6 +163,10 @@ function makePalette() {
                     this.paint = moveColor.css("background-color");
                     $("body").css("cursor", "pointer");
                     moveColor.css("visibility", "hidden");
+                    var colorsave = JSON.stringify(colors);
+                    console.log("this.id: " + this.id);
+                    colors.splice(this.id,1,tinycolor(this.paint).toHex());
+                    console.log("colors 1: " + colorsave + " colors 2 " + JSON.stringify(colors));
                 } else {
                     segments.forEach(function (s) {
                         s.attr({ "stroke-width": 3 });
@@ -380,17 +384,18 @@ function updatePalette(i, c) {
     makeHoverSegs();
 }
 function deleteSeg() {
-    segments.forEach(function (e) {
-        if (e.select) {
+    var toDelete = null;
+    for (var i = 0; i < segments.length; i++) {
+        if (segments[i].select) {
             console.log("delete seg");
             segs--;
-            segments[e.id].remove();
-            colors.splice(e.id, 1);
+            segments[i].remove();
+            colors.splice(i, 1);
             deletePalette();
             makePalette();
             makeHoverSegs();
         }
-    })
+    }
 }
 function updateSliders() {
     var h = globalHsl.h;
