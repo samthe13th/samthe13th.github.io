@@ -3,8 +3,6 @@ var sliderRoundness = 8;
 var dragging = { o: null, id: null };
 var xoffset;
 var Slider = function (stage, x, y, l, m, drag, up) {
-    //xoffset = document.getElementById(parentId).getBoundingClientRect().left + window.scrollX;
-    console.log("")
     xoffset = stage.canvas.parentNode.offsetLeft + window.scrollX;
     var bar, rtnSlider, label;
     var snap = m;
@@ -13,7 +11,6 @@ var Slider = function (stage, x, y, l, m, drag, up) {
     rtnSlider = stage.rect(x, y - (sliderWidth / 2), 10, 20).attr({ fill: "white", stroke: "grey" })
         .drag(drag, function () {
             dragging = { o: this };
-            console.log("onclick xabs: " + rtnSlider.xabs);
             $("body").css("cursor", "pointer");
         }, function () {
             dragging = { o: null, id: null };
@@ -24,11 +21,11 @@ var Slider = function (stage, x, y, l, m, drag, up) {
     rtnSlider.x = x;
     rtnSlider.bar = bar;
     rtnSlider.sliderX = Math.round(x + xoffset);
-    console.log("new Slider x: " + rtnSlider.sliderX);
     rtnSlider.sliderY = y;
     rtnSlider.sliderLength = l;
     rtnSlider.xabs = rtnSlider.sliderX;
     rtnSlider.sliderPoint = 0;
+    rtnSlider.units = "";
     rtnSlider.setColor = function (c) {
         bar.attr({ fill: c });
     }
@@ -36,7 +33,7 @@ var Slider = function (stage, x, y, l, m, drag, up) {
         rtnSlider.snap = s;
     }
     rtnSlider.setLabel = function (l) {
-        rtnSlider.label = stage.text(rtnSlider.sliderX, (rtnSlider.sliderY - 20), "0 " + l).attr({ "font-size": 20 });
+        rtnSlider.label = stage.text(rtnSlider.sliderX, (rtnSlider.sliderY - 20), "0 " + l).attr({ "font-size": 16, "fill": "white" });
     }
     rtnSlider.hideSlider = function () {
         bar.hide();
@@ -59,42 +56,40 @@ var Slider = function (stage, x, y, l, m, drag, up) {
             rtnSlider.label.translate(-1 * (rtnSlider.xabs - rtnSlider.sliderX))
             rtnSlider.xabs = rtnSlider.sliderX;
         } else {
+            var SP = rtnSlider.sliderPoint;
+            var dSP = p - SP;
             var div = (rtnSlider.sliderLength - 10) / rtnSlider.snap;
-            rtnSlider.xabs += p * div;
-            rtnSlider.translate((p * div), 0);
-            // rtnSlider.label.translate((p * div), 0);
+            rtnSlider.xabs += dSP * div;
+            rtnSlider.translate((dSP * div), 0);
+            rtnSlider.sliderPoint = p;
+            if (rtnSlider.label) {
+                rtnSlider.label.translate((p * div), 0);
+            }
         }
     }
     rtnSlider.snapTo = snapTo;
     rtnSlider.snap = snap;
     return rtnSlider;
 }
-function calcSliderX(o){
-   // xoffset = document.getElementById(o.parentId).getBoundingClientRect().left + window.scrollX;
+function calcSliderX(o) {
     xoffset = o.stage.canvas.parentNode.offsetLeft + window.scrollX;
-    console.log("xoffset " + xoffset);
     o.sliderX = Math.round(o.x + xoffset);
-    console.log("calc slider x: " + o.sliderX);
 }
-function calcSliderAbsX(o){
+function calcSliderAbsX(o) {
     o.xabs = o.sliderX + ((o.sliderPoint * (o.sliderLength - 10)) / o.snap);
-    console.log("calc xabs: " + o.xabs);
 }
 $("body").mousemove(function (e) {
     $("#op").text(e.pageX);
     var xdiff, moveTo, endPoint;
     var o = dragging.o;
     var trans;
-    console.log("px : " + e.pageX);
     if (dragging.o !== null) {
         calcSliderX(o);
         calcSliderAbsX(o);
         if (isNaN(o.xabs) || o.snap === 0) {
-            console.log("NAN");
             o.xabs = o.sliderX;
         } else {
             xdiff = e.pageX - o.xabs;
-            console.log("xdiff: " + xdiff);
             moveTo = o.xabs + xdiff;
             endPoint = o.sliderX + o.sliderLength - 10;
             if (e.pageX <= o.sliderX) {
@@ -112,7 +107,6 @@ $("body").mousemove(function (e) {
                 o.label.translate(trans, 0)
             }
             o.sliderPoint = Math.round((o.snap * (o.xabs - o.sliderX)) / ((o.sliderLength - 10)));
-            console.log("SP: " + o.sliderPoint + "e.pageX" + e.pageX + " o.xabs: " + o.xabs + " o.sliderX: " + o.sliderX);
         }
     }
 })

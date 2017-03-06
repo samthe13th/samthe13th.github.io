@@ -65,7 +65,6 @@ function getPxlData(xpxl, ypxl) {
     })
 }
 function getMousePos(canvas, evt) {
-    console.log("get mouse pos")
     var rect = canvas.getBoundingClientRect();
     return {
         x: evt.pageX - rect.left,
@@ -73,7 +72,6 @@ function getMousePos(canvas, evt) {
     };
 }
 function toggleTable() {
-    console.log("toggleTable");
     var mytable = $("#table-window");
     if (mytable.css("visibility") === "hidden") {
         mytable.css("visibility", "visible");
@@ -89,7 +87,6 @@ function updateTable() {
     for (var i = 0; i < segments.length; i++) {
         var rgb_obj = "rgb(" + tinycolor(segments[i].attrs.fill).toRgb().r + ", " + tinycolor(segments[i].attrs.fill).toRgb().g + ", " + tinycolor(segments[i].attrs.fill).toRgb().b + ")";
         var hsl_obj = "hsl(" + Math.round(tinycolor(segments[i].attrs.fill).toHsl().h) + ", " + Math.round(100 * tinycolor(segments[i].attrs.fill).toHsl().s) + "%, " + Math.round(100 * tinycolor(segments[i].attrs.fill).toHsl().l) + "%)";
-        console.log("update table " + i);
         if (colorMode === "HSL") {
             colorObj = hsl_obj;
         } else {
@@ -144,7 +141,6 @@ function makePalette() {
         var newP = paper.path(makeSeg(i, colors.length))
             .attr({ stroke: "#fff", "stroke-width": 3, fill: colors[i], id: i })
             .mouseover(function () {
-                console.log("over segment " + this.id)
                 segments[this.id].attr({"stroke-width": 10 });
                 window.dropOn = this;
                 if (moveColor.css("visibility") === "visible") {
@@ -197,27 +193,6 @@ function deletePalette() {
     })
     segments = [];
 }
-// function addSeg(i, n) {
-//     var defaultColor = blank;
-//     var newP = paper.path(makeSeg(i, n))
-//         .attr({ stroke: "#ebedf1", "stroke-width": 3, fill: defaultColor, id: ("seg" + i) })
-//         .click(function () {
-//             preview.attr("fill", this.attrs.fill);
-//         })
-//         .mouseover(function () {
-//             segments[this.id].attr({"fill":"red" });
-//             console.log("2 over segment " + this.id);
-//             $("body").css("cursor", "pointer");
-//         })
-//         .mouseout(function () {
-//             $("body").css("cursor", "default");
-//         })
-//     newP.paint = defaultColor;
-//     newP.fillable = "true";
-//     newP.id = i;
-//     segments.push(newP);
-//     return newP
-// }
 function makeSeg(i, n) {
     var path = "M" + (pcX + (r * Math.cos((i - 1) * 2 * Math.PI / n))) + " " + (pcY + (r * Math.sin((i - 1) * 2 * Math.PI / n))) + " "
         + "A " + r + " " + r + ", 0, 0, 1," + " " + (pcX + (r * Math.cos(i * 2 * Math.PI / n))) + " " + (pcY + (r * Math.sin(i * 2 * Math.PI / n))) + " "
@@ -339,19 +314,6 @@ function makeSwatch(color, x, y) {
     };
     return swatch;
 }
-// function getNewPalette(x) {
-//     var newSet = {};
-//     var offset = 0;
-//     for (var i = 0; i < (segments.length + 1); i++) {
-//         if (i === x) {
-//             offset = 1;
-//             newSet[i] = addSeg(i, segments.length);
-//         } else {
-//             newSet[i] = segments[i - offset];
-//         }
-//     }
-//     return newSet;
-// }
 function pickColor(c) {
     moveColor.css({
         "background-color": c,
@@ -375,7 +337,6 @@ function makeHoverSegs() {
         var testHover = paper.path(makeHoverSeg(i, colors.length))
             .attr({ "fill": blank, "stroke": "white", "stroke-width": 5, "opacity": 0 })
             .mouseover(function () {
-                console.log("hover seg: " + this.id);
                 var segL = segments[this.id];
                 var segR = segments[0];
                 if (this.id < segments.length - 1) {
@@ -391,7 +352,6 @@ function makeHoverSegs() {
                 this.attr({ "opacity": 0, "stroke-width": 5 })
             })
             .click(function () {
-                console.log("segs length: " + segs);
                 if (segs < maxSegs) {
                     segs++;
                     updatePalette(this.id, this.mix);
@@ -421,7 +381,9 @@ function updateSliders() {
     lumSlider.setColor(lumGrad);
     satGrad = "180-#" + tinycolor({ h, s: 1.0, l: 0.5 }).toHex() + "-grey";
     satSlider.setColor(satGrad);
-    //lumSlider.setSlider(90)
+    lumSlider.setSlider(lumPos);
+    hueSlider.setSlider(huePos);
+    satSlider.setSlider(satPos);
 }
 function updateSwatches(c) {
     var colors = getCombinations(c);
