@@ -3,7 +3,7 @@ var sliderRoundness = 8;
 var dragging = { o: null, id: null };
 var xoffset;
 var Slider = function (stage, x, y, l, m, drag, up) {
-    xoffset = stage.canvas.parentNode.offsetLeft + window.scrollX;
+    //xoffset = stage.canvas.parentNode.offsetLeft + window.scrollX;
     var bar, rtnSlider, label;
     var snap = m;
     var snapTo = [];
@@ -17,15 +17,17 @@ var Slider = function (stage, x, y, l, m, drag, up) {
             $("body").css("cursor", "default");
             up();
         });
+    rtnSlider.xoffset = stage.canvas.parentNode.offsetLeft + window.scrollX;
     rtnSlider.stage = stage;
     rtnSlider.x = x;
     rtnSlider.bar = bar;
-    rtnSlider.sliderX = Math.round(x + xoffset);
+    rtnSlider.sliderX = Math.round(x + rtnSlider.xoffset);
     rtnSlider.sliderY = y;
     rtnSlider.sliderLength = l;
     rtnSlider.xabs = rtnSlider.sliderX;
     rtnSlider.sliderPoint = 0;
     rtnSlider.units = "";
+    rtnSlider.pageX = 0;
     rtnSlider.setColor = function (c) {
         bar.attr({ fill: c });
     }
@@ -72,33 +74,36 @@ var Slider = function (stage, x, y, l, m, drag, up) {
     return rtnSlider;
 }
 function calcSliderX(o) {
-    xoffset = o.stage.canvas.parentNode.offsetLeft + window.scrollX;
-    o.sliderX = Math.round(o.x + xoffset);
+    o.xoffset = o.stage.canvas.parentNode.offsetLeft + window.scrollX;
+    o.sliderX = Math.round(o.x + o.xoffset);
 }
 function calcSliderAbsX(o) {
     o.xabs = o.sliderX + ((o.sliderPoint * (o.sliderLength - 10)) / o.snap);
 }
-$("body").mousemove(function (e) {
-    $("#op").text(e.pageX);
+$(document).mousemove(function (e) {
     var xdiff, moveTo, endPoint;
     var o = dragging.o;
     var trans;
     if (dragging.o !== null) {
+        o.pageX = e.pageX;
         calcSliderX(o);
         calcSliderAbsX(o);
         if (isNaN(o.xabs) || o.snap === 0) {
             o.xabs = o.sliderX;
         } else {
-            xdiff = e.pageX - o.xabs;
+            xdiff = e.pageX - o.xabs + window.scrollX;
             moveTo = o.xabs + xdiff;
             endPoint = o.sliderX + o.sliderLength - 10;
-            if (e.pageX <= o.sliderX) {
+            if (e.pageX <= (o.sliderX - window.scrollX)) {
+                console.log("1")
                 trans = o.sliderX - o.xabs;
                 o.xabs = o.sliderX;
             } else if (moveTo >= endPoint) {
+                console.log("2")
                 trans = endPoint - o.xabs;
                 o.xabs = endPoint;
             } else {
+                console.log("3")
                 trans = xdiff;
                 o.xabs += xdiff;
             }
