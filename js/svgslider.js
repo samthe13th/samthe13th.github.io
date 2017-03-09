@@ -1,9 +1,7 @@
 var sliderWidth = 10
 var sliderRoundness = 8;
 var dragging = { o: null, id: null };
-var xoffset;
 var Slider = function (stage, x, y, l, m, drag, up) {
-    //xoffset = stage.canvas.parentNode.offsetLeft + window.scrollX;
     var bar, rtnSlider, label;
     var snap = m;
     var snapTo = [];
@@ -19,22 +17,17 @@ var Slider = function (stage, x, y, l, m, drag, up) {
             $("body").css("cursor", "default");
             up();
         });
-    rtnSlider.mousemove(function (e) {
-        console.log("mouse move")
-    })
     rtnSlider.x = x;
     rtnSlider.stage = stage;
     rtnSlider.bar = bar;
-    rtnSlider.xoffset = stage.canvas.parentNode.offsetLeft
+    rtnSlider.xoffset = stage.canvas.parentNode.offsetLeft;
     rtnSlider.sliderX = x + rtnSlider.xoffset;
-    console.log("sliderX: " + rtnSlider.sliderX)
     rtnSlider.sliderY = y;
     rtnSlider.sliderLength = l;
     rtnSlider.xabs = rtnSlider.sliderX;
     rtnSlider.sliderPoint = 0;
     rtnSlider.units = "";
     rtnSlider.pageX = 0;
-    console.log("offsetleft: " + rtnSlider.stage.canvas.parentNode.offsetLeft + " xoffset: " + rtnSlider.xoffset);
     rtnSlider.setColor = function (c) {
         bar.attr({ fill: c });
     }
@@ -81,7 +74,6 @@ var Slider = function (stage, x, y, l, m, drag, up) {
         var newx = x - rtnSlider._.dx - rtnSlider.xoffset;
         rtnSlider.translate(newx, 0);
         this.xabs = x;
-        console.log("xabs: " + rtnSlider.xabs);
     }
     rtnSlider.snapTo = snapTo;
     rtnSlider.snap = snap;
@@ -89,64 +81,22 @@ var Slider = function (stage, x, y, l, m, drag, up) {
 }
 function calcSliderX(o) {
     o.xoffset = o.stage.canvas.parentNode.offsetLeft;
-    o.sliderX = o.x + o.xoffset;
-    console.log("sliderX: " + o.sliderX);
-    console.log("offsetleft: " + o.stage.canvas.parentNode.offsetLeft + " xoffset: " + o.xoffset);
+    o.sliderX = o.xoffset;
 }
 function calcSliderAbsX(o) {
     o.xabs = o.sliderX + ((o.sliderPoint * (o.sliderLength - (sliderWidth / 2))) / o.snap);
-    console.log("xabs: " + o.xabs)
 }
-function track(o) {
-    dragging.o = o;
-}
-window.onresize = function (event) {
-
-};
 $(document).mousemove(function (e) {
-   // console.log(e.pageX);
     var xdiff, moveTo, endPoint;
     var o = dragging.o;
     if (dragging.o !== null) {
-        console.log("drag")
-        if (e.pageX <= o.sliderX) {
-            console.log("less")
+        if (e.pageX <= o.sliderX + o.x) {
             o.setAbsX(o.sliderX);
-        } else if (e.pageX >= (o.sliderX + o.sliderLength)) {
-            console.log("more")
+        } else if (e.pageX >= (o.x + o.sliderX + o.sliderLength - sliderWidth)) {
             o.setAbsX(o.sliderX + o.sliderLength - sliderWidth)
         } else {
-            console.log("mid")
-            o.setAbsX(e.pageX);
+            o.setAbsX(e.pageX - o.x);
         }
         o.sliderPoint = Math.round((o.snap * (o.xoffset + o._.dx - o.sliderX)) / (o.sliderLength - sliderWidth));
-
-        // o.pageX = e.pageX;
-        // calcSliderX(o);
-        // calcSliderAbsX(o);
-        // if (isNaN(o.xabs) || o.snap === 0) {
-        //     o.xabs = o.sliderX;
-        // } else {
-        //     // xdiff = e.pageX - o.xabs + window.scrollX;
-        //     // moveTo = o.xabs + xdiff;
-        //     // endPoint = o.sliderX + o.sliderLength - 10;
-        //     // if (e.pageX <= (o.sliderX + window.scrollX)) {
-        //     //     trans = o.sliderX - o.xabs;
-        //     //     o.xabs = o.sliderX;
-        //     // } else if (moveTo >= endPoint) {
-        //     //     trans = endPoint - o.xabs;
-        //     //     o.xabs = endPoint;
-        //     // } else {
-        //     //     trans = xdiff;
-        //     //     console.log("trans: " + trans);
-        //     //     o.xabs += xdiff;
-        //     // }
-        //     // o.translate(trans, 0);
-        //     //o.setAbsX(o.pageX)
-        //     if (o.label) {
-        //         o.label.translate(trans, 0)
-        //     }
-        //     o.sliderPoint = Math.round((o.snap * (o.xabs - o.sliderX)) / ((o.sliderLength - 10)));
-        //}
     }
 })

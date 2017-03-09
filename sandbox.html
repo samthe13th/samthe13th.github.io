@@ -17,7 +17,7 @@
 <script src="js/raphael.min.js"></script>
 <script src="js/svgslider.js"></script>
 <script>
-var paper = Raphael("paper", 600, 50);
+var paper = Raphael("paper", 600, 100);
 var testSlider;
 var onDrag = function(){
     $("#debug1").text(this.xabs);
@@ -28,14 +28,14 @@ var onDrag = function(){
 var onUp = function(){
     console.log("up")
 }
-$(function(){
-testSlider = new Slider(paper, 0, 10, 300, 100, onDrag, onUp)
+testSlider = new Slider(paper, 100, 10, 300, 100, onDrag, onUp);
 testSlider.setColor("grey");
-})
+testSlider2 = new Slider(paper, 0, 30, 40, 100, onDrag, onUp);
+testSlider2.setColor("grey");
 </script>
 <style>
     #paper {
-        width: 300px;
+        width: 600px;
         margin: auto;
         border-style: solid;
     }

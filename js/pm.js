@@ -111,7 +111,6 @@ function updateTable() {
 
 //change color mode on color table to display HSL or RGB values
 function toggleColorMode(c) {
-    console.log(c)
     colorMode = c;
     updateTable();
 }
@@ -607,11 +606,11 @@ $(function () {
     satColor = tinycolor("hsl " + tinycolor(preview.attrs.fill).toHsl().h + " 1.0 0.9").toHex();
     satGrad = "180-#" + satColor + "-grey"
     mixColors(tinycolor("blue").toRgb(), tinycolor("red").toRgb(), 0.5);
-    lumSlider = Slider(paper, padding + sliderX, 100, sliderLength, 180, lumUpdate, sliderUp);
+    lumSlider = new Slider(paper, padding + sliderX, 100, sliderLength, 180, lumUpdate, sliderUp);
     lumSlider.setColor("180-#fff-#000");
-    hueSlider = Slider(paper, padding + sliderX, 130, sliderLength, 180, hueUpdate, sliderUp);
+    hueSlider = new Slider(paper, padding + sliderX, 130, sliderLength, 180, hueUpdate, sliderUp);
     hueSlider.setColor(colorGrad.reverse());
-    satSlider = Slider(paper, padding + sliderX, 160, sliderLength, 180, satUpdate, sliderUp)
+    satSlider = new Slider(paper, padding + sliderX, 160, sliderLength, 180, satUpdate, sliderUp)
     satSlider.setColor(satGrad);
     preview.attr("fill", "lightgreen");
     hexText.attr('text', "#" + tinycolor("#90ee90").toHex());
