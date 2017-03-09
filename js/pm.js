@@ -151,7 +151,6 @@ function makePalette() {
                     this.paint = moveColor.css("background-color");
                     $("body").css("cursor", "pointer");
                     moveColor.css("visibility", "hidden");
-                    console.log("this.id: " + this.id);
                     colors.splice(this.id, 1, tinycolor(this.paint).toHex());
                 } else {
                     var newColor = "#" + tinycolor(this.attrs.fill).toHex();
@@ -161,7 +160,6 @@ function makePalette() {
                     })
                     segments[this.id].select = true;
                     segments[this.id].attr({ "stroke-width": 10 });
-                    console.log("selected");
                     preview.attr("fill", newColor);
                     hexText.attr('text', newColor);
                     globalHsl = tinycolor(this.attrs.fill).toHsl();
@@ -564,7 +562,6 @@ function onReady(callback) {
 
 //Show page
 function show(id, value) {
-    console.log("show " + id);
     document.getElementById(id).style.display = value ? 'block' : 'none';
 }
 

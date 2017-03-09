@@ -12,22 +12,29 @@ var Slider = function (stage, x, y, l, m, drag, up) {
         .drag(drag, function () {
             dragging = { o: this };
             $("body").css("cursor", "pointer");
+            calcSliderX(this);
+            calcSliderAbsX(this);
         }, function () {
             dragging = { o: null, id: null };
             $("body").css("cursor", "default");
             up();
         });
-    rtnSlider.xoffset = stage.canvas.parentNode.offsetLeft + window.scrollX;
-    rtnSlider.stage = stage;
+    rtnSlider.mousemove(function (e) {
+        console.log("mouse move")
+    })
     rtnSlider.x = x;
+    rtnSlider.stage = stage;
     rtnSlider.bar = bar;
-    rtnSlider.sliderX = Math.round(x + rtnSlider.xoffset);
+    rtnSlider.xoffset = stage.canvas.parentNode.offsetLeft
+    rtnSlider.sliderX = x + rtnSlider.xoffset;
+    console.log("sliderX: " + rtnSlider.sliderX)
     rtnSlider.sliderY = y;
     rtnSlider.sliderLength = l;
     rtnSlider.xabs = rtnSlider.sliderX;
     rtnSlider.sliderPoint = 0;
     rtnSlider.units = "";
     rtnSlider.pageX = 0;
+    console.log("offsetleft: " + rtnSlider.stage.canvas.parentNode.offsetLeft + " xoffset: " + rtnSlider.xoffset);
     rtnSlider.setColor = function (c) {
         bar.attr({ fill: c });
     }
@@ -53,65 +60,93 @@ var Slider = function (stage, x, y, l, m, drag, up) {
         }
     }
     rtnSlider.setSlider = function (p) {
-        if (p === "reset") {
-            rtnSlider.translate(-1 * (rtnSlider.xabs - rtnSlider.sliderX));
-            rtnSlider.label.translate(-1 * (rtnSlider.xabs - rtnSlider.sliderX))
-            rtnSlider.xabs = rtnSlider.sliderX;
-        } else {
-            var SP = rtnSlider.sliderPoint;
-            var dSP = p - SP;
-            var div = (rtnSlider.sliderLength - 10) / rtnSlider.snap;
-            rtnSlider.xabs += dSP * div;
-            rtnSlider.translate((dSP * div), 0);
-            rtnSlider.sliderPoint = p;
-            if (rtnSlider.label) {
-                rtnSlider.label.translate((p * div), 0);
-            }
+        var toPoint = p;
+        if (p < 0) {
+            toPoint = 0;
+        } else if (p > rtnSlider.snap) {
+            toPoint = rtnSlider.snap;
         }
+        var SP = rtnSlider.sliderPoint;
+        var dSP = toPoint - SP;
+        var div = (rtnSlider.sliderLength - 10) / rtnSlider.snap;
+        rtnSlider.xabs += dSP * div;
+        rtnSlider.translate((dSP * div), 0);
+        rtnSlider.sliderPoint = toPoint;
+        if (rtnSlider.label) {
+            rtnSlider.label.translate((toPoint * div), 0);
+
+        }
+    }
+    rtnSlider.setAbsX = function (x) {
+        var newx = x - rtnSlider._.dx - rtnSlider.xoffset;
+        rtnSlider.translate(newx, 0);
+        this.xabs = x;
+        console.log("xabs: " + rtnSlider.xabs);
     }
     rtnSlider.snapTo = snapTo;
     rtnSlider.snap = snap;
     return rtnSlider;
 }
 function calcSliderX(o) {
-    o.xoffset = o.stage.canvas.parentNode.offsetLeft + window.scrollX;
-    o.sliderX = Math.round(o.x + o.xoffset);
+    o.xoffset = o.stage.canvas.parentNode.offsetLeft;
+    o.sliderX = o.x + o.xoffset;
+    console.log("sliderX: " + o.sliderX);
+    console.log("offsetleft: " + o.stage.canvas.parentNode.offsetLeft + " xoffset: " + o.xoffset);
 }
 function calcSliderAbsX(o) {
-    o.xabs = o.sliderX + ((o.sliderPoint * (o.sliderLength - 10)) / o.snap);
+    o.xabs = o.sliderX + ((o.sliderPoint * (o.sliderLength - (sliderWidth / 2))) / o.snap);
+    console.log("xabs: " + o.xabs)
 }
+function track(o) {
+    dragging.o = o;
+}
+window.onresize = function (event) {
+
+};
 $(document).mousemove(function (e) {
+   // console.log(e.pageX);
     var xdiff, moveTo, endPoint;
     var o = dragging.o;
-    var trans;
     if (dragging.o !== null) {
-        o.pageX = e.pageX;
-        calcSliderX(o);
-        calcSliderAbsX(o);
-        if (isNaN(o.xabs) || o.snap === 0) {
-            o.xabs = o.sliderX;
+        console.log("drag")
+        if (e.pageX <= o.sliderX) {
+            console.log("less")
+            o.setAbsX(o.sliderX);
+        } else if (e.pageX >= (o.sliderX + o.sliderLength)) {
+            console.log("more")
+            o.setAbsX(o.sliderX + o.sliderLength - sliderWidth)
         } else {
-            xdiff = e.pageX - o.xabs + window.scrollX;
-            moveTo = o.xabs + xdiff;
-            endPoint = o.sliderX + o.sliderLength - 10;
-            if (e.pageX <= (o.sliderX - window.scrollX)) {
-                console.log("1")
-                trans = o.sliderX - o.xabs;
-                o.xabs = o.sliderX;
-            } else if (moveTo >= endPoint) {
-                console.log("2")
-                trans = endPoint - o.xabs;
-                o.xabs = endPoint;
-            } else {
-                console.log("3")
-                trans = xdiff;
-                o.xabs += xdiff;
-            }
-            o.translate(trans, 0);
-            if (o.label) {
-                o.label.translate(trans, 0)
-            }
-            o.sliderPoint = Math.round((o.snap * (o.xabs - o.sliderX)) / ((o.sliderLength - 10)));
+            console.log("mid")
+            o.setAbsX(e.pageX);
         }
+        o.sliderPoint = Math.round((o.snap * (o.xoffset + o._.dx - o.sliderX)) / (o.sliderLength - sliderWidth));
+
+        // o.pageX = e.pageX;
+        // calcSliderX(o);
+        // calcSliderAbsX(o);
+        // if (isNaN(o.xabs) || o.snap === 0) {
+        //     o.xabs = o.sliderX;
+        // } else {
+        //     // xdiff = e.pageX - o.xabs + window.scrollX;
+        //     // moveTo = o.xabs + xdiff;
+        //     // endPoint = o.sliderX + o.sliderLength - 10;
+        //     // if (e.pageX <= (o.sliderX + window.scrollX)) {
+        //     //     trans = o.sliderX - o.xabs;
+        //     //     o.xabs = o.sliderX;
+        //     // } else if (moveTo >= endPoint) {
+        //     //     trans = endPoint - o.xabs;
+        //     //     o.xabs = endPoint;
+        //     // } else {
+        //     //     trans = xdiff;
+        //     //     console.log("trans: " + trans);
+        //     //     o.xabs += xdiff;
+        //     // }
+        //     // o.translate(trans, 0);
+        //     //o.setAbsX(o.pageX)
+        //     if (o.label) {
+        //         o.label.translate(trans, 0)
+        //     }
+        //     o.sliderPoint = Math.round((o.snap * (o.xabs - o.sliderX)) / ((o.sliderLength - 10)));
+        //}
     }
 })

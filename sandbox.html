@@ -1,0 +1,42 @@
+<html>
+
+<head></head>
+
+<body>
+    <div id="paper"></div>
+    <div>xabs: <span id="debug1"></span></div>
+    <div>sliderX: <span id="debug2"></span></div>
+    <div>xoffset: <span id="debug3"></span></div>
+    <div>sliderPoint: <span id="debug4"></span></div>
+    <div>5: <span id="debug5"></span></div>
+    <div>6: <span id="debug6"></span></div>
+</body>
+
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="js/raphael.min.js"></script>
+<script src="js/svgslider.js"></script>
+<script>
+var paper = Raphael("paper", 600, 50);
+var testSlider;
+var onDrag = function(){
+    $("#debug1").text(this.xabs);
+    $("#debug2").text(this.sliderX);
+    $("#debug3").text(this.xoffset);
+     $("#debug4").text(this.sliderPoint);
+}
+var onUp = function(){
+    console.log("up")
+}
+$(function(){
+testSlider = new Slider(paper, 0, 10, 300, 100, onDrag, onUp)
+testSlider.setColor("grey");
+})
+</script>
+<style>
+    #paper {
+        width: 300px;
+        margin: auto;
+        border-style: solid;
+    }
+</style>
