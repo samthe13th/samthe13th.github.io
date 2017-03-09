@@ -83,6 +83,7 @@ function showTable() {
     mytable.css("visibility", "visible");
 }
 
+
 function showPalette(){
     $("#css-window").css("visibility", "hidden");
     $("#table-window").css("visibility", "hidden");
@@ -625,7 +626,7 @@ function makeColorCSS() {
     $("#css-window").css("visibility", "visible");
     var csspage = ""
     for (var i = 0; i < segments.length; i++) {
-        csspage += "#swatch" + i + "{ "
+        csspage += "#pm" + i + " { "
             + " color: "
             + "#" + tinycolor(segments[i].attrs.fill).toHex()
             + " }"
