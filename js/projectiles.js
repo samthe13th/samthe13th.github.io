@@ -190,7 +190,7 @@ function drawRuler(id, x, y) {
     }
 }
 var slider = Slider(sandbox, 100, 460, 430, maxTime, drag, function () { console.log("up!") });
-slider.label = sandbox.text(slider.sliderX, (slider.sliderY - 20), "0 sec").attr({ "font-size": 16, "fill": "white" });
+//slider.label = sandbox.text(slider.sliderX, (slider.sliderY - 20), "0 sec").attr({ "font-size": 16, "fill": "white" });
 var params_btn_base = sandbox.rect(60, 25, 120, 50, 12)
     .attr({ "font-size": 12, "stroke": "white", "fill": "#5ccb58", "stroke-width": 2 })
 var params_btn_txt = sandbox.text(120, 50, "Change \n Parameters").attr({ fill: "white", "font-size": 18 })
@@ -309,12 +309,6 @@ function makeScreen2() {
             coords.attr({ text: "(0," + current_height + ")" })
             coords.translate(balldx, (starty - ball.y));
             ball.y = starty;
-            // if (slider.step > 0) {
-            //     var sliderpos = ((slider.xabs - slider.sliderX) / ((slider.sliderLength - 10) / slider.step));
-            //     slider.setSlider(-sliderpos);
-            // } else {
-            //     slider.setSlider("reset")
-            // }
             slider.setSlider(0);
             slider.label.attr({
                 text: "0 sec"

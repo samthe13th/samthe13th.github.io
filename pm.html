@@ -8,10 +8,29 @@
 <div id="header"><span id="sitetitle">Palette Machine</span> | by Sam MacKinnon <em>(demo)</em></div>
 
 <body>
-    <button id="palette-btn" onclick="toggleTable()">Palette</button>
+    <button id="palette-btn" onclick="showPalette()">Palette</button>
+    <button id="palette-btn" onclick="showTable()">Table</button>
+    <button id="css-btn" onclick="makeColorCSS()">CSS</button>
     <div id="fullpage">
         <div id="colormachine">
-            <div id="left"></div>
+            <div id="left">
+                <div class="sub-window" id="table-window">
+                    <h4>Table Mode</h4>
+                    <div class="table-div">
+                        <table id="color-table">
+                            <tr>
+                                <th>Swatch</th>
+                                <th>Hex</th>
+                                <th><button id="RGBbtn" onclick="changeToRgb()">RGB</button><button id="HSLbtn" onclick="changeToHsl()">HSL</button></th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="sub-window" id="css-window">
+                    <h4>CSS</h4>
+                    <div id="colors-CSS"></div>
+                </div>
+            </div>
             <img class="bg-image"></img>
             <div id="right">
                 <h2 class='customTitle'>Upload Image</h2>
@@ -27,18 +46,6 @@
                 <canvas id="myCanvas" width="300" height="300"></canvas>
             </div>
             <svg id="move-color"></svg>
-            <div id="table-window">
-                <h4>Table Mode</h4>
-                <div class="table-div">
-                    <table id="color-table">
-                        <tr>
-                            <th>Swatch</th>
-                            <th>Hex</th>
-                            <th><button id="RGBbtn" onclick="changeToRgb()">RGB</button><button id="HSLbtn" onclick="changeToHsl()">HSL</button></th>
-                        </tr>
-                    </table>
-                </div>
-            </div>
         </div>
 </body>
 
@@ -85,19 +92,31 @@
         visibility: hidden;
     }
     
-    #table-window {
+    .sub-window {
+        position: relative;
+        top: -510px;
+        left: 0px;
         z-index: 99;
-        position: absolute;
         width: 374px;
-        height: 350px;
-        margin-top: 50px;
+        height: 330px;
         border-style: none;
         background-color: white;
+    }
+    
+    #table-window {
         visibility: hidden;
+    }
+
+    #css-window {
+        top: -860px;
+        padding: 15px;
     }
     
     #color-table {
         height: 300px;
+        position: relative;
+        left: 0px;
+        top: 0px;
     }
     
     .table-div {
@@ -111,7 +130,6 @@
     }
     
     #left {
-        border-style: none;
         display: inline-block;
         float: left;
         margin-right: 16px;
@@ -168,7 +186,6 @@
         background-color: white;
         border-color: white;
         border-radius: 10px;
-        border-style: solid;
         height: 50px;
         width: 300px;
         margin: 15px;

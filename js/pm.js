@@ -75,15 +75,17 @@ function getMousePos(canvas, evt) {
     };
 }
 
-//Show/hide color table window
-function toggleTable() {
+//Show color table window
+function showTable() {
+    $("#css-window").css("visibility", "hidden");
     var mytable = $("#table-window");
-    if (mytable.css("visibility") === "hidden") {
-        mytable.css("visibility", "visible");
-    } else {
-        mytable.css("visibility", "hidden");
-    }
     updateTable();
+    mytable.css("visibility", "visible");
+}
+
+function showPalette(){
+    $("#css-window").css("visibility", "hidden");
+    $("#table-window").css("visibility", "hidden");
 }
 
 //Update color table
@@ -616,4 +618,18 @@ $(function () {
     hexText.attr('text', "#" + tinycolor("#90ee90").toHex());
     globalHsl = tinycolor("lightgreen").toHsl();
     updateSliders();
+    makeColorCSS();
 });
+
+function makeColorCSS() {
+    $("#css-window").css("visibility", "visible");
+    var csspage = ""
+    for (var i = 0; i < segments.length; i++) {
+        csspage += "#swatch" + i + "{ "
+            + " color: "
+            + "#" + tinycolor(segments[i].attrs.fill).toHex()
+            + " }"
+            + "<br>"
+    }
+    $("#colors-CSS").html(csspage);
+}

@@ -8,8 +8,8 @@
     <div>sliderX: <span id="debug2"></span></div>
     <div>xoffset: <span id="debug3"></span></div>
     <div>sliderPoint: <span id="debug4"></span></div>
-    <div>5: <span id="debug5"></span></div>
-    <div>6: <span id="debug6"></span></div>
+    <a download="info.txt" id="downloadlink">Download</a>
+<a href="javascript:onDownload();">Download 2</a>
 </body>
 
 </html>
@@ -32,6 +32,27 @@ testSlider = new Slider(paper, 100, 10, 300, 100, onDrag, onUp);
 testSlider.setColor("grey");
 testSlider2 = new Slider(paper, 0, 30, 40, 100, onDrag, onUp);
 testSlider2.setColor("grey");
+
+(function () {
+var textFile = null,
+  makeTextFile = function (text) {
+    var data = new Blob([text], {type: 'text/css'});
+    if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
+    }
+    textFile = window.URL.createObjectURL(data);
+    return textFile;
+  };
+    var link = document.getElementById('downloadlink');
+    link.href = makeTextFile("blerg");
+})();
+
+function onDownload() {
+    var data = JSON.stringify({ "color": "white"});
+    document.location = 'data:Application/octet-stream,' +
+                         encodeURIComponent(data);
+}
+
 </script>
 <style>
     #paper {

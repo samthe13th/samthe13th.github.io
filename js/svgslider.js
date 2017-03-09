@@ -1,20 +1,23 @@
-var sliderWidth = 10
-var sliderRoundness = 8;
-var dragging = { o: null, id: null };
+var $_dragging = { o: null, id: null };
 var Slider = function (stage, x, y, l, m, drag, up) {
-    var bar, rtnSlider, label;
+    var bar, rtnSlider, label
+    var sliderWidth = 10
+    var sliderRoundness = 8;
     var step = m;
     bar = stage.rect(x, y, l, sliderWidth, sliderRoundness).attr({ fill: "white", opacity: 0.5, stroke: "none" });
     rtnSlider = stage.rect(x, y - (sliderWidth / 2), 10, 20).attr({ fill: "white", stroke: "grey" })
-        .drag(drag, function () {
-            dragging = { o: this };
+        .drag(
+        drag,
+        function () {
+            $_dragging = { o: this };
             $("body").css("cursor", "pointer");
-            calcSliderX(this);
+            rtnSlider.calcSliderX();
         }, function () {
-            dragging = { o: null, id: null };
+            $_dragging = { o: null, id: null };
             $("body").css("cursor", "default");
             up();
         });
+    rtnSlider.width = sliderWidth;
     rtnSlider.x = x;
     rtnSlider.stage = stage;
     rtnSlider.bar = bar;
@@ -24,6 +27,7 @@ var Slider = function (stage, x, y, l, m, drag, up) {
     rtnSlider.sliderLength = l;
     rtnSlider.sliderPoint = 0;
     rtnSlider.units = "";
+    rtnSlider.label = stage.text(rtnSlider.sliderX, (rtnSlider.sliderY - 20), "").attr({ "font-size": 16, "fill": "black" });
     rtnSlider.setColor = function (c) {
         bar.attr({ fill: c });
     }
@@ -67,25 +71,26 @@ var Slider = function (stage, x, y, l, m, drag, up) {
     rtnSlider.setAbsX = function (x) {
         var newx = x - rtnSlider._.dx - rtnSlider.xoffset;
         rtnSlider.translate(newx, 0);
+        rtnSlider.label.translate(newx, 0);
+    }
+    rtnSlider.calcSliderX = function () {
+        rtnSlider.xoffset = rtnSlider.stage.canvas.parentNode.offsetLeft;
+        rtnSlider.sliderX = rtnSlider.xoffset;
     }
     rtnSlider.step = step;
+    $(stage.canvas).mousemove(function (e) {
+        var xdiff, moveTo, endPoint;
+        var o = $_dragging.o;
+        if ($_dragging.o !== null) {
+            if (e.pageX <= o.sliderX + o.x) {
+                o.setAbsX(o.sliderX);
+            } else if (e.pageX >= (o.x + o.sliderX + o.sliderLength - o.width)) {
+                o.setAbsX(o.sliderX + o.sliderLength - o.width)
+            } else {
+                o.setAbsX(e.pageX - o.x);
+            }
+            o.sliderPoint = Math.round((o.step * (o.xoffset + o._.dx - o.sliderX)) / (o.sliderLength - o.width));
+        }
+    })
     return rtnSlider;
 }
-function calcSliderX(o) {
-    o.xoffset = o.stage.canvas.parentNode.offsetLeft;
-    o.sliderX = o.xoffset;
-}
-$(document).mousemove(function (e) {
-    var xdiff, moveTo, endPoint;
-    var o = dragging.o;
-    if (dragging.o !== null) {
-        if (e.pageX <= o.sliderX + o.x) {
-            o.setAbsX(o.sliderX);
-        } else if (e.pageX >= (o.x + o.sliderX + o.sliderLength - sliderWidth)) {
-            o.setAbsX(o.sliderX + o.sliderLength - sliderWidth)
-        } else {
-            o.setAbsX(e.pageX - o.x);
-        }
-        o.sliderPoint = Math.round((o.step * (o.xoffset + o._.dx - o.sliderX)) / (o.sliderLength - sliderWidth));
-    }
-})
