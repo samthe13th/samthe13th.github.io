@@ -495,7 +495,7 @@ function sliderUp() {
 
 //Call this when dragging luminance slider
 function lumUpdate() {
-    globalHsl.l = this.sliderPoint / this.snap;
+    globalHsl.l = this.sliderPoint / this.step;
     var newColor = "#" + tinycolor(globalHsl).toHex();
     preview.attr("fill", newColor);
     hexText.attr('text', newColor);
@@ -512,7 +512,7 @@ function hueUpdate() {
 
 //Call this when dragging saturation slider
 function satUpdate() {
-    globalHsl.s = this.sliderPoint / this.snap;
+    globalHsl.s = this.sliderPoint / this.step;
     var newColor = "#" + tinycolor(globalHsl).toHex();
     preview.attr("fill", newColor);
     hexText.attr('text', newColor);

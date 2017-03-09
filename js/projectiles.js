@@ -213,7 +213,7 @@ function drawPath() {
         e.remove();
     })
     path = sandbox.set();
-    for (var i = 5; i < slider.snap; i += 5) {
+    for (var i = 5; i < slider.step; i += 5) {
         var p = calcPosition((pxltom * startx), (pxltom * starty), vx, vy, (i / 10), a);
         var point = makePoint(p);
         point.pos = i;
@@ -300,7 +300,7 @@ function makeScreen2() {
             current_dx = 0;
             setVxVy();
             setMaxTime();
-            slider.setSnap(maxTime);
+            slider.setstep(maxTime);
             setEndSpeed();
             var balldx = startx - ball.x;
             ball.translate(balldx, (starty - ball.y));
@@ -309,8 +309,8 @@ function makeScreen2() {
             coords.attr({ text: "(0," + current_height + ")" })
             coords.translate(balldx, (starty - ball.y));
             ball.y = starty;
-            // if (slider.snap > 0) {
-            //     var sliderpos = ((slider.xabs - slider.sliderX) / ((slider.sliderLength - 10) / slider.snap));
+            // if (slider.step > 0) {
+            //     var sliderpos = ((slider.xabs - slider.sliderX) / ((slider.sliderLength - 10) / slider.step));
             //     slider.setSlider(-sliderpos);
             // } else {
             //     slider.setSlider("reset")
