@@ -4,13 +4,13 @@ var preview, hexText, hueString, colorGrad, lumBar, hueBar, satColor, satGrad, s
 var r = 160;
 var r2 = 80;
 var padding = 0;
-var offx = 25;
-var offy = 15;
+var offx = 28;
+var offy = 57;
 var maxSegs = 12;
 var globalHsl = { h: 0, s: 0, l: 0 };
 var pcX = r + offx;
 var pcY = r + offy;
-var paper = Raphael("left", 600, 520);
+var paper = Raphael("left", 600, 600);
 var segments = paper.set();
 var hoverSegs = paper.set();
 var palette = paper.set();
@@ -83,8 +83,7 @@ function showTable() {
     mytable.css("visibility", "visible");
 }
 
-
-function showPalette(){
+function showPalette() {
     $("#css-window").css("visibility", "hidden");
     $("#table-window").css("visibility", "hidden");
 }
@@ -221,7 +220,7 @@ function makeHoverSeg(i, n) {
 
 //Make an svg rectangle representing the current selected color
 function makeColorPreview() {
-    preview = paper.rect(padding + 400, padding + 10, 60, 60, 12);
+    preview = paper.rect(padding + 400, padding + 45, 60, 60, 12);
     preview.attr({ "fill": "white", "stroke": "none" })
         .mousedown(function () {
             pickColor(this.attrs.fill);
@@ -240,7 +239,7 @@ function makeColorPreview() {
         });
     preview.x = 385;
     preview.y = 75;
-    hexText = paper.text(padding + 470, padding + 40, preview.attrs.fill)
+    hexText = paper.text(padding + 470, padding + 75, preview.attrs.fill)
         .attr({ "font-size": 26, "text-anchor": "start", "fill": "grey" })
 }
 
@@ -261,7 +260,7 @@ function getCombinations(c) {
 function makeSwatches(c) {
     var count = 0;
     var xpos = 0;
-    var ypos = padding + 410;
+    var ypos = padding + 460;
     var ypos2 = ypos + 70;
     var colors = getCombinations(c)
     for (var a in colors) {
@@ -442,7 +441,7 @@ function drawBlender() {
 function blendContainer(a, b, c, d, fillable) {
     var r = 50;
     var x1 = padding + 485;
-    var y1 = padding + 310;
+    var y1 = padding + 340;
     var space = 80;
     var bc = paper.path("M " + x1 + " " + y1 + " "
         + "A " + r + " " + r + ", 0," + a + "," + b + ", " + x1 + " " + (y1 - space) + " "
@@ -583,19 +582,61 @@ onReady(function () {
     show('loadOverlay', false);
 });
 
+function Tab(x, y, text, f) {
+    var d = "M " + x + " " + y + " l15 -30 l100 0 l15 35 Z";
+    var tab = paper.path(d);
+    tab.attr({
+        stroke: "white",
+        "stroke-width": 2,
+        fill: "#ebedf1"
+    })
+    return tab;
+}
+
+function doit(fn) {
+    fn();
+}
+
 //Initialize program
 $(function () {
-    paper.rect(padding - 5, padding - 15, 380, 365).attr({
+    // paper.rect(padding - 5, padding - 15, 380, 50).attr({
+    //     stroke: "#ebedf1",
+    //     "stroke-width": 2,
+    //     fill: "white"
+    // })
+    var fn1 = function () {
+        console.log("fn1");
+    };
+    var t3 = new Tab(220, 35, "Palette", "#ebedf1");
+    t3.click(function () {
+        makeColorCSS();
+    })
+    var t2 = new Tab(110, 35, "Palette", "#ebedf1");
+    t2.click(function () {
+        showTable();
+    })
+    var t1 = new Tab(0, 35, "Palette", "#ebedf1");
+    t1.click(function () {
+        showPalette();
+    })
+    // var d = "M 0 35 l15 -30 l100 0 l15 35 Z";
+    // var tab = paper.path(d);
+    // tab.attr({
+    //     stroke: "#ebedf1",
+    //     "stroke-width": 2,
+    //     fill: "#ebedf1"
+    // });
+    paper.rect(padding - 5, 35, 380, 365).attr({
         stroke: "#ebedf1",
         "stroke-width": 2,
         fill: "white"
     })
-    paper.rect(padding - 5 + 380, padding - 15, 225, 365).attr({
+    paper.rect(padding - 5 + 380, padding + 35, 225, 365).attr({
         stroke: "#ebedf1",
         "stroke-width": 2,
         fill: "white"
     })
-    paper.rect(padding - 5 + 380, padding - 15 + 200, 225, 165).attr({
+    paper.rect(padding - 5 + 380, padding - 15 + 230, 225, 185).attr({
         stroke: "#ebedf1",
         "stroke-width": 2,
         fill: "white"
@@ -609,11 +650,11 @@ $(function () {
     satColor = tinycolor("hsl " + tinycolor(preview.attrs.fill).toHsl().h + " 1.0 0.9").toHex();
     satGrad = "180-#" + satColor + "-grey"
     mixColors(tinycolor("blue").toRgb(), tinycolor("red").toRgb(), 0.5);
-    lumSlider = new Slider(paper, padding + sliderX, 100, sliderLength, 180, lumUpdate, sliderUp);
+    lumSlider = new Slider(paper, padding + sliderX, 120, sliderLength, 180, lumUpdate, sliderUp);
     lumSlider.setColor("180-#fff-#000");
-    hueSlider = new Slider(paper, padding + sliderX, 130, sliderLength, 180, hueUpdate, sliderUp);
+    hueSlider = new Slider(paper, padding + sliderX, 150, sliderLength, 180, hueUpdate, sliderUp);
     hueSlider.setColor(colorGrad.reverse());
-    satSlider = new Slider(paper, padding + sliderX, 160, sliderLength, 180, satUpdate, sliderUp)
+    satSlider = new Slider(paper, padding + sliderX, 180, sliderLength, 180, satUpdate, sliderUp)
     satSlider.setColor(satGrad);
     preview.attr("fill", "lightgreen");
     hexText.attr('text', "#" + tinycolor("#90ee90").toHex());

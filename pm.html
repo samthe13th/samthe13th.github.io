@@ -6,16 +6,11 @@
     <link href="css/custom.css" rel="stylesheet">
 </head>
 <div id="header"><span id="sitetitle">Palette Machine</span> | by Sam MacKinnon <em>(demo)</em></div>
-
 <body>
-    <button id="palette-btn" onclick="showPalette()">Palette</button>
-    <button id="palette-btn" onclick="showTable()">Table</button>
-    <button id="css-btn" onclick="makeColorCSS()">CSS</button>
     <div id="fullpage">
         <div id="colormachine">
             <div id="left">
                 <div class="sub-window" id="table-window">
-                    <h4>Table Mode</h4>
                     <div class="table-div">
                         <table id="color-table">
                             <tr>
@@ -94,7 +89,7 @@
     
     .sub-window {
         position: relative;
-        top: -510px;
+        top: -565px;
         left: 0px;
         z-index: 99;
         width: 374px;
@@ -106,21 +101,22 @@
     #table-window {
         visibility: hidden;
     }
-
+    
     #css-window {
-        top: -860px;
+        top: -895px;
         padding: 15px;
+        height: 365px;
     }
     
     #color-table {
-        height: 300px;
+        height: 365px;
         position: relative;
         left: 0px;
         top: 0px;
     }
     
     .table-div {
-        height: 300px;
+        height: 365px;
         overflow-y: scroll;
     }
     
@@ -142,8 +138,9 @@
         display: inline-block;
         color: red;
         width: 400px;
-        height: 504px;
-        margin: auto;
+        height: 522px;
+        margin-top: 34px;
+
     }
     
     #image-form {
