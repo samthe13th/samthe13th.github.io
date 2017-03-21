@@ -588,7 +588,9 @@ function Tab(x, y, text, f) {
     tab.attr({
         stroke: "white",
         "stroke-width": 2,
-        fill: "#ebedf1"
+        fill: blank
+
+
     })
     return tab;
 }
