@@ -15,8 +15,8 @@
         "speed": 20
     }
     stage = sandbox.rect(10, 0, 580, 510).attr({ stroke: "#ffffff", fill: "#5cadd6" });
-    axis = sandbox.path(["M", startx, 100, "l", 0, 280, "l", 500, 0]).attr({ stroke: "#ffffff" });
     setParams();
+    axis = sandbox.path(["M", startx, 100, "l", 0, 280, "l", 500, 0]).attr({ stroke: "#ffffff" });
     setEndSpeed();
     setMaxTime();
     makeBall();
@@ -153,7 +153,7 @@
             positions[i] = {};
             positions[i].speed = pl_speed;
             positions[i].vy = pl_vy;
-            positions[i].label = pl_time + " sec";
+            //positions[i].label = pl_time + " sec";
             positions[i].pos = pl_pos;
             positions[i].height = pl_height;
         }
@@ -276,35 +276,38 @@
         var ball2 = paramsScreen.circle(430, 265, 10).attr({ stroke: "#ffffff", "stroke-width": 2 });
         ball2.y;
         var drag_angle = function () {
-            this.label.attr({ text: angle_slider.sliderPoint + " degs" });
+            //this.label.attr({ text: angle_slider.sliderPoint + " degs" });
             var da = angle_slider.sliderPoint - arrow.angle;
             arrow.rotate(da, cx, (csize / 2));
             arrow.angle = angle_slider.sliderPoint;
             parameters.angle = arrow.angle;
         };
         var drag_speed = function () {
-            this.label.attr({ text: (speed_slider.sliderPoint) + " m/s" });
+         //   this.label.attr({ text: (speed_slider.sliderPoint) + " m/s" });
             v = speed_slider.sliderPoint;
             parameters.speed = v;
         };
         var drag_height = function () {
-            this.label.attr({ text: height_slider.sliderPoint + " m" });
+         //  this.label.attr({ text: height_slider.sliderPoint + " m" });
             height = height_slider.sliderPoint;
             starty = ground - (height * mtopxl);
             parameters.height = height;
         };
         var angle_slider = Slider(paramsScreen, 90, param_offset_y + 40, 300, 180, drag_angle, function () { });
-        angle_slider.label = paramsScreen.text(angle_slider.sliderX, (angle_slider.sliderY - 20), parameters.angle + ' degs').attr({ "font-size": 14 });
+        // angle_slider.label = paramsScreen.text(angle_slider.sliderX, (angle_slider.sliderY - 20), parameters.angle + ' degs').attr({ "font-size": 14 });
+        angle_slider.setLabel("degs");
         angle_slider.setSlider(parameters.angle);
         angle_slider.setColor("rgba(255, 255, 255, 0.5)");
         arrow.rotate(parameters.angle, cx, (csize / 2));
         arrow.angle = parameters.angle;
         var height_slider = Slider(paramsScreen, 90, (param_offset_y + 120), 300, 100, drag_height, function () { });
-        height_slider.label = paramsScreen.text(height_slider.sliderX, (height_slider.sliderY - 20), parameters.height + " m").attr({ "font-size": 14 });
+        height_slider.setLabel("m");
+       // height_slider.label = paramsScreen.text(height_slider.sliderX, (height_slider.sliderY - 20), parameters.height + " m").attr({ "font-size": 14 });
         height_slider.setSlider(parameters.height);
         height_slider.setColor("rgba(255, 255, 255, 0.5)");
         var speed_slider = Slider(paramsScreen, 90, (param_offset_y + 200), 300, 40, drag_speed, function () { });
-        speed_slider.label = paramsScreen.text(speed_slider.sliderX, (speed_slider.sliderY - 20), parameters.speed + " m/s").attr({ "font-size": 14 });
+       // speed_slider.label = paramsScreen.text(speed_slider.sliderX, (speed_slider.sliderY - 20), parameters.speed + " m/s").attr({ "font-size": 14 });
+        speed_slider.setLabel("m/s");
         speed_slider.setSlider(parameters.speed);
         speed_slider.setColor("rgba(255, 255, 255, 0.5)");
         var close_circle = paramsScreen.rect(470, 350, 60, 40, 10).attr({ fill: "white", stroke: "none" });
@@ -328,9 +331,9 @@
                 coords.translate(balldx, (starty - ball.y));
                 ball.y = starty;
                 slider.setSlider(0);
-                slider.label.attr({
-                    text: "0 sec"
-                })
+                // slider.label.attr({
+                //     text: "0 sec"
+                // })
                 speedTxt.attr({
                     text: " Speed: " + parameters.speed + " m/s"
                 });
