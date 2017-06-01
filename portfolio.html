@@ -26,6 +26,7 @@
 
     <!-- Theme CSS -->
     <link href="css/creative.css" rel="stylesheet">
+    <link href="css/lity.min.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -37,7 +38,6 @@
 </head>
 
 <body id="page-top">
-
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -54,10 +54,10 @@
                         <a class="page-scroll" href="#about">About</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#services">Web Development</a>
+                        <a class="page-scroll" href="#Web-dev">Web Development</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#portfolio">Video</a>
+                        <a class="page-scroll" href="#video">Video</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#contact">Contact</a>
@@ -80,20 +80,16 @@
                 <div class="subTitle">Design</div> -->
                 <br><br>
                 <div>
-                    <a class="page-scroll" href="#portfolio">
-                        <img id="ill-btn" class="pbtn" src="img/pbtns0001.png"></img>
+                    <a href="#about" class="page-scroll">
+                        <img id="about-btn" class="pbtn" src="img/aboutbtn0001.png"></img>
                     </a>
-                    <a class="page-scroll" href="#portfolio">
+                    <a class="page-scroll" href="#Web-dev">
                         <img id="dev-btn" class="pbtn" src="img/pbtns0003.png"></img>
                     </a>
-                    <a class="page-scroll" href="#portfolio">
+                    <a class="page-scroll" href="#video">
                         <img id="vid-btn" class="pbtn" src="img/pbtns0005.png"></img>
                     </a>
                 </div>
-                <br><br>
-                <a href="#about" class="page-scroll">
-                    <img id="about-btn" class="pbtn" src="img/aboutbtn0001.png"></img>
-                </a>
             </div>
         </div>
     </header>
@@ -132,7 +128,8 @@
             </div>
         </div>
     </section>
-    <section class="bg-primary sub-section" id="Web-dev">
+
+    <section class="bg-dark sub-section" id="Web-dev">
         <div class="container">
             <div class="row">
                 <h1 class="super-header">Interactive Web Design</h1>
@@ -144,12 +141,12 @@
             <div class="centered sub-header">
                 <h1 class="section-heading">Palette Machine</h1>
                 <h3 class="section-heading">A javascript color palette maker for designers</h2>
-
-            </div>
-            <div class="section-white centered">
-                <a href="https://samthe13th.github.io/pm" target="_blank">
-                    <img class="section-image" src="assets/colorlogo3.png"></img>
-                </a>
+                    <br>
+                    <div class="section-white centered">
+                        <a href="https://www.palettemachine.com" target="_blank">
+                            <img class="section-image" src="assets/colorlogo3.png"></img>
+                        </a>
+                    </div>
             </div>
         </div>
     </section>
@@ -160,13 +157,14 @@
                 <div class="custom-body col-lg-6 col-sm-6 vcenter text-center">
                     <h2 class="section-heading">Drag and drop UI</h2>
                     <hr>
-                    <p class="section-p">I wanted to make something that was playful, intuitive, and gave me the feeling of working with a physical palette, like a painter.
-                        <br><br>
-                        In any design, one of first things I ask myself is: 'How does the user <em>want</em> this to work?<br><br> What feels natural?'
+                    <p class="section-p">I wanted to make something that was playful, intuitive, and gave me the feeling of working with a physical
+                        palette, like a painter.
+                        <br><br> In any design, one of first things I ask myself is: 'How does the user <em>want</em> this
+                        to work?<br><br> What feels natural?'
                     </p>
                 </div>
                 <div class="col-lg-6 col-sm-6 text-center">
-                    <img src="assets/gifs/pmdemodrag.gif"></img>
+                    <img class="demogif" src="assets/gifs/pm_dragdrop.gif"></img>
                 </div>
             </div>
         </div>
@@ -175,13 +173,14 @@
         <div class="container">
             <div class="row">
                 <div class="custom-body col-lg-6 col-sm-6 text-center">
-                    <img src="assets/gifs/pmdemoblend.gif"></img>
+                    <img class="demogif" src="assets/gifs/pm_blender2.gif"></img>
                 </div>
                 <div class="col-lg-6 col-sm-6  text-center vcenter">
                     <h2 class="section-heading">Color Blending</h2>
                     <hr class="light">
-                    <p class="section-p">Often when designing a color palette, it is useful to set up cornerstone colors first, and then find intermediates between these. <br><br> 
-                    To support this, I designed an easy way to blend colors on the palette, by simply clicking between two colors to mix them</p>
+                    <p class="section-p">Often when designing a color palette, it is useful to set up cornerstone colors first, and then find
+                        intermediates between these. <br><br> To support this, I designed an easy way to blend colors on
+                        the palette, by simply clicking between two colors to mix them</p>
                 </div>
             </div>
         </div>
@@ -192,96 +191,182 @@
                 <div class="custom-body col-lg-6 col-sm-6 vcenter text-center">
                     <h2 class="section-heading">Reference Images</h2>
                     <hr>
-                    <p class="section-p">My, what a beautiful Scottish sheep! (Photo credit my mother)<br><br>Often when designing a website or logo, it is important to make a palette that fits existing properties. For this reason, I knew it would be important for Palette Machine to be able to build palettes using reference photos</p>
+                    <p class="section-p">Often when designing a website or logo, it is often important to make a palette that fits existing properties.<br><br>For
+                        this reason, I wanted to give the user the opertunity to easily grab colors from a reference image.</p>
                 </div>
                 <div class="col-lg-6 col-sm-6 text-center">
-                    <img src="assets/gifs/sheep4.gif"></img>
+                    <img src="assets/gifs/pm_refimages2.gif"></img>
                 </div>
             </div>
         </div>
     </section>
+    <section class="no-padding" id="Web-dev">
+        <div class="centered sub-header">
+            <h1 class="section-heading">Science Education Tools</h1>
+            <h3 class="section-heading">JavaScript tools for communicating science</h2>
+                <br>
+                <div class="section-white centered">
+                    <a href="https://www.palettemachine.com" target="_blank">
+                        <img class="section-image" src="assets/scicom.jpg"></img>
+                    </a>
+                </div>
+        </div>
+    </section>
+    <section class="no-padding" id="web-portfolio">
+        <div>
+            <section class="bg-primary grey" id="pm-4">
+                <div id="freebody" style="background:#fff" class="lity-hide">
+                    <div class="ivideo">
+                        <div class="ivideo">
+                            <iframe src="https://www.veryscience.com/apps/physics100/freebody.html" width="750" height="630" frameborder="0" scrolling="no"
+                                allowfullscreen="allowfullscreen"></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6  text-center vcenter">
+                            <h2 class="section-heading">Freebody Diagrams</h2>
+                            <hr class="dark">
+                            <p class="section-p">This is a thing</p>
+                        </div>
+                        <a href="#freebody" data-lity>
+                            <div class="custom-body col-lg-6 col-sm-6 text-center">
+                                <img class="demogif" src="assets/gifs/freebody3.gif"></img>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-primary" id="pm-5">
+                <div id="mitosis" style="background:#fff" class="lity-hide">
+                    <div class="ivideo">
+                        <div class="ivideo">
+                            <iframe src="mitosis.html" width="720" height="550" frameborder="0" allowfullscreen="allowfullscreen" scrolling="no"></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <a href="#mitosis" data-lity>
+                            <div class="custom-body col-lg-6 col-sm-6 text-center">
+                                <img class="demogif" src="assets/gifs/mitosis/mitosis.gif"></img>
+                            </div>
+                        </a>
+                        <div class="col-lg-6 col-sm-6  text-center vcenter">
+                            <h2 class="section-heading">Mitosis</h2>
+                            <hr class="light">
+                            <p class="section-p">This is a thing</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="bg-primary grey" id="pm-6">
+                <div id="projectiles" style="background:#fff" class="lity-hide">
+                    <div class="ivideo">
+                        <div class="ivideo">
+                            <iframe src="https://www.veryscience.com/apps/physics100/projectiles.html" width="600px" height="525px" frameborder="0" scrolling="no"
+                                allowfullscreen="allowfullscreen"></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6  text-center vcenter">
+                            <h2 class="section-heading">Projectile Simulator</h2>
+                            <hr class="dark">
+                            <p class="section-p">This is a thing</p>
+                        </div>
+                        <a href="#projectiles" data-lity>
+                            <div class="custom-body col-lg-6 col-sm-6 text-center">
+                                <img class="demogif" src="assets/gifs/projectiles4.gif"></img>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
     <!-- Video -->
-    <section class="bg-primary sub-section" id="Web-dev">
+    <section class="bg-dark sub-section" id="video">
         <div class="container">
             <div class="row">
                 <h1 class="super-header">Video Production</h1>
             </div>
         </div>
     </section>
-    <section class="no-padding" id="portfolio">
-        <div class="container-fluid">
-            <div class="row no-gutter popup-gallery">
-                <div class="col-lg-6">
-                    <h2 class="section-heading">About Me</h2>
-                    <hr class="light">
-                    <p class="gallery"> I love doing design projects that bring art and science together in interesting and creative ways.
-                        <br><br> I am an award winning animator (Ottawa International Animation Festival, 2006), and have
-                        an Integrated Science degree in Ecology, Computer Science, and Communications from the University
-                        of British Columbia (2017).
-                        <br><br> I also studied filmscoring at Selkirk College (2009), and play in the chamber rock band
-                        The Ruffled Feathers My passion is bringing art and science together in interesting and creative
-                        ways.
-                        <br><br>
-                    </p>
-                    <!--<a href="#services" class="page-scroll btn btn-default btn-xl sr-button">Get Started!</a> -->
+    <section class="bg-primary grey" id="pm-5">
+        <div id="scivideos" style="background:#fff" class="lity-hide">
+            <div class="ivideo">
+                <div class="ivideo">
+                    <iframe src="https://h5p.org/h5p/embed/61362" width="1090" height="674" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
                 </div>
-                <div class="col-lg-6 col-md-12">
-                    <a href="img/portfolio/fullsize/3.jpg" class="portfolio-box">
-                        <img src="img/idl.png" class="img-responsive" alt="">
-                        <div class="portfolio-box-caption">
-                            <div class="portfolio-box-caption-content">
-                                <div class="project-category text-faded">
-                                    Category
-                                </div>
-                                <div class="project-name">
-                                    Project Name
-                                </div>
-                            </div>
-                        </div>
-
-                    </a>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <a href="img/portfolio/fullsize/1.jpg" class="portfolio-box">
-                        <img src="img/portfolio/thumbnails/1.jpg" class="img-responsive" alt="">
-                        <div class="portfolio-box-caption">
-                            <div class="portfolio-box-caption-content">
-                                <div class="project-category text-faded">
-                                    Category
-                                </div>
-                                <div class="project-name">
-                                    Project Name
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <a href="img/portfolio/fullsize/2.jpg" class="portfolio-box">
-                        <img src="img/portfolio/thumbnails/2.jpg" class="img-responsive" alt="">
-                        <div class="portfolio-box-caption">
-                            <div class="portfolio-box-caption-content">
-                                <div class="project-category text-faded">
-                                    Category
-                                </div>
-                                <div class="project-name">
-                                    Project Name
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <a href="#scivideos" data-lity>
+                    <div class="custom-body col-lg-6 col-sm-6 text-center">
+                        <img class="demogif" src="assets/ballfall.jpg"></img>
+                    </div>
+                </a>
+                <div class="col-lg-6 col-sm-6  text-center vcenter">
+                    <h2 class="section-heading">First Year Physics Videos</h2>
+                    <hr class="dark">
+                    <p class="section-p">This is a thing</p>
                 </div>
             </div>
         </div>
     </section>
-
-    <aside class="bg-dark">
-        <div class="container text-center">
-            <div class="call-to-action">
-                <a href="https://github.com/samthe13th" class="btn btn-default btn-xl sr-button">Github</a>
+    <section class="bg-primary" id="pm-4">
+        <div id="animation" style="background:#fff" class="lity-hide">
+            <div class="ivideo">
+                <div class="ivideo">
+                    <iframe src="https://player.vimeo.com/video/104252323" width="800" height="447" frameborder="0" webkitallowfullscreen mozallowfullscreen
+                        allowfullscreen></iframe>
+                </div>
             </div>
         </div>
-    </aside>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-sm-6  text-center vcenter">
+                    <h2 class="section-heading">Animation Reel</h2>
+                    <hr class="light">
+                    <p class="section-p">This is a thing</p>
+                </div>
+                <a href="#animation" data-lity>
+                    <div class="custom-body col-lg-6 col-sm-6 text-center">
+                        <img class="demogif" src="assets/DNA.jpg"></img>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="bg-primary grey" id="pm-6">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-sm-6  text-center vcenter">
+                    <h2 class="section-heading">Music Videos</h2>
+                    <hr class="dark">
+                    <p class="section-p">This is a thing</p>
+                </div>
+                <a href="#musicvideos" data-lity>
+                    <div class="custom-body col-lg-6 col-sm-6 text-center">
+                        <img class="demogif" src="assets/idl.png"></img>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div id="musicvideos" style="background:#fff" class="lity-hide">
+            <div class="ivideo">
+                <div class="ivideo">
+                    <iframe src="https://player.vimeo.com/video/98692911" width="800" height="450" frameborder="0" webkitallowfullscreen mozallowfullscreen
+                        allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section id="contact">
         <div class="container">
@@ -314,48 +399,55 @@
     <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
     <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.spritely/0.6.8/jquery.spritely.js"></script>
+    <script src="js/lity.min.js"></script>
 
     <!-- Theme JavaScript -->
     <script src="js/creative.min.js"></script>
     <script src="js/mascot.js"></script>
+
 
 </body>
 
 </html>
 
 <script>
-    $( "#vid-btn" ).hover(
-  function() {
-    $(this).attr({src: "img/pbtns0006.png"});
-  }, function() {
-    $(this).attr({src: "img/pbtns0005.png"})
-  }
-);
-    $( "#dev-btn" ).hover(
-  function() {
-    $(this).attr({src: "img/pbtns0004.png"});
-  }, function() {
-    $(this).attr({src: "img/pbtns0003.png"})
-  }
-);
-    $( "#ill-btn" ).hover(
-  function() {
-    $(this).attr({src: "img/pbtns0002.png"});
-  }, function() {
-    $(this).attr({src: "img/pbtns0001.png"})
-  }
-);
-    $( "#about-btn" ).hover(
-  function() {
-    $(this).attr({src: "img/aboutbtn0002.png"});
-  }, function() {
-    $(this).attr({src: "img/aboutbtn0001.png"})
-  }
-);
+    $("#vid-btn").hover(
+        function () {
+            $(this).attr({ src: "img/pbtns0006.png" });
+        }, function () {
+            $(this).attr({ src: "img/pbtns0005.png" })
+        }
+    );
+    $("#dev-btn").hover(
+        function () {
+            $(this).attr({ src: "img/pbtns0004.png" });
+        }, function () {
+            $(this).attr({ src: "img/pbtns0003.png" })
+        }
+    );
+    $("#ill-btn").hover(
+        function () {
+            $(this).attr({ src: "img/pbtns0002.png" });
+        }, function () {
+            $(this).attr({ src: "img/pbtns0001.png" })
+        }
+    );
+    $("#about-btn").hover(
+        function () {
+            $(this).attr({ src: "img/aboutbtn0002.png" });
+        }, function () {
+            $(this).attr({ src: "img/aboutbtn0001.png" })
+        }
+    );
+
 </script>
 
 
 <style>
+    .demogif {
+        height: 380px;
+    }
+    
     .section-image {
         border-style: solid;
         width: 200px;
@@ -363,12 +455,12 @@
     }
     
     .sub-header {
-        margin: 30px;
+        margin: 60px;
     }
     
     .super-header {
         text-align: center;
-        font-size: 60px;
+        font-size: 50px;
     }
     
     .section-white {
@@ -388,7 +480,8 @@
     }
     
     .custom-hr {
-        width: 500px color: grey;
+        width: 500px;
+        color: grey;
     }
     
     .vcenter {
@@ -451,10 +544,12 @@
         border-color: red;
     }
     
+    .ivideo {
+        overflow: hidden;
+    }
+    
     iframe {
         overflow: "hidden";
-        width: 900px;
-        height: 600px;
         border: none;
     }
 </style>

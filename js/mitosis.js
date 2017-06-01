@@ -1,4 +1,4 @@
-var game = new Phaser.Game(800, 500, Phaser.CANVAS, 'mitosis-stage', { preload: preload, create: create, update: update, render: render }, true);
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'mitosis-stage', { preload: preload, create: create, update: update, render: render }, true);
 var cat;
 var cframe = 1;
 //var paper = Raphael(0, 200, 800, 200);
@@ -29,11 +29,11 @@ function preload() {
     game.load.spritesheet("mitosis24", "assets/mitosis/mitosis0024.png");
 }
 function create() {
-    cat = game.add.sprite(100, 100, "mitosis1");
+    cat = game.add.sprite(80, 40, "mitosis1");
     cat.scale.setTo(0.3, 0.3);
 }
 function update() {
-    cframe = sliderPoint + 1;
+    cframe = slider.sliderPoint + 1;
     var mframe = "mitosis" + cframe;
     cat.loadTexture(mframe, 0, false);
 }
@@ -41,7 +41,7 @@ function render() {
 }
 
 var drag = function () {
-    $("#op2").text(sliderPoint);
+    $("#op2").text(slider.sliderPoint);
     console.log("drag");
 };
 var on = function () {
@@ -51,4 +51,20 @@ var on = function () {
 var off = function () {
     dragging = { o: null };
 }
-var slider = Slider(10,10, 400, drag, on, off)
+var sandbox = Raphael(0, 10, 660, 600);
+slider = Slider(sandbox, 150, 450, 430, 23, drag, function () { });
+slider.setColor("#3ba6d0");
+sandbox.rect(80,70,580,420).attr({
+    "stroke": "#3ba6d0"
+})
+sandbox.text(370,30,"Mitosis").attr({
+    "font-size": "30px",
+    "fill": "#3ba6d0"
+});
+sandbox.text(370,510,"Click and drag slider to advance").attr({
+    "font-size": "16px",
+    "fill": "#3ba6d0"
+})
+preload();
+create();
+//var slider = Slider(10,10, 400, drag, on, off)
