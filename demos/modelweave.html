@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link type="text/css" rel="stylesheet" href="css/debugger.css">
+</head>
+
+<body onresize="responsiveLayout()">
+    <div id="header"></div>
+
+    <div id="app">
+        <div id="middlePanel">
+            <div id="leftcol">
+                <div id="seg1">
+                    <h4>FACTORS</h4>
+                </div>
+                <div id="hdrag1" class="hDrag">
+                </div>
+                <div id="seg2">
+                    <h4>CONNECTIONS</h4>
+                </div>
+                <div id="hdrag2" class="hDrag"></div>
+                <div id="seg3">
+                    <h4>PROPERTIES</h4>
+                </div>
+            </div>
+            <div id="drag1" class="vDrag">
+                <div id="handle"></div>
+                <div class="panelBtn" id="leftPanelBtn"></div>
+            </div>
+            <div id="modelstage">
+                <div id="expandbtn"></div>
+                <div id="collapsebtn"></div>
+            </div>
+            <!--  <div id="drag2" class="vDrag">
+               <div class="panelBtn" id="rightPanelBtn"></div> 
+                <div id='handle2'></div> -->
+        </div>
+        <div id="rightcol">
+            <div class="titlebar">CHAT</div>
+            <div id="toggleChatBtn">-</div>
+        </div>
+    </div>
+    <div id="rightPanelBtn"></div>
+    </div>
+</body>
+
+</html>
+
+<style>
+    .titlebar {
+        color: white;
+        position: absolute;
+        font-size: 20px;
+        font-family: Arial, Arial, Helvetica, sans-serif;
+        margin: 10px;
+        text-align: center;
+        top: 0px;
+        left: 0px;
+    }
+    
+    #toggleChatBtn {
+        color: white;
+        font-size: 45px;
+        position: absolute;
+        right: 10px;
+        top: -6px;
+        cursor: pointer;
+    }
+    
+    .panelBtn {
+        margin: 0%;
+        position: absolute;
+        width: 20px;
+        height: 100%;
+        background-color: #006666;
+        z-index: 10000;
+        cursor: pointer;
+    }
+    
+    #leftPanelBtn {
+        left: 100%;
+    }
+    
+    #rightPanelBtn {
+        right: 100%;
+    }
+    
+    #handle {
+        position: absolute;
+        background-color: white;
+        height: 100%;
+        width: 100%;
+        cursor: w-resize;
+    }
+    
+    #handle2 {
+        position: absolute;
+        background-color: white;
+        height: 100%;
+        width: 100%;
+        cursor: w-resize;
+    }
+    
+    body {
+        border-style: none;
+        border-color: blue;
+        border-width: 4px;
+        margin: 0%;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+    
+    #drag1 {
+        left: 350px;
+    }
+    
+    #drag2 {
+        left: 75%;
+    }
+    
+    #hdrag1 {
+        top: 30%;
+    }
+    
+    #hdrag2 {
+        top: 60%;
+    }
+    
+    #app {
+        font-family: Helvetica, Arial, sans-serif;
+    }
+    
+    .vDrag {
+        position: absolute;
+        background-color: white;
+        height: 90%;
+        top: 5%;
+        width: 3px;
+        transform: translateX(-50%);
+        z-index: 20;
+    }
+    
+    .hDrag {
+        position: absolute;
+        background-color: white;
+        height: 4px;
+        width: 100%;
+        transform: translateY(-50%);
+        z-index: 20;
+        cursor: n-resize;
+    }
+    
+    #leftcol {
+        margin: 0%;
+        position: absolute;
+        width: 350px;
+        height: 90%;
+        top: 5%;
+        background-color: darkgrey;
+        will-change: transform;
+        transform: translateZ(0);
+    }
+    
+    #expandbtn {
+        position: absolute;
+        border-style: solid;
+        border-color: black;
+        border-width: 4px;
+        width: 15px;
+        height: 15px;
+        margin: 8px;
+        right: 5px;
+        display: none;
+    }
+    
+    #collapsebtn {
+        position: absolute;
+        background-color: black;
+        height: 5px;
+        width: 20px;
+        opacity: 0;
+        top: 18px;
+        right: 20px;
+        display: none;
+    }
+    
+    .wireframe {
+        border-style: solid;
+        border-width: 2px;
+        border-color: white;
+    }
+    
+    #modelstage {
+        margin: 0%;
+        position: absolute;
+        left: 25%;
+        top: 5%;
+        width: 50%;
+        height: 90%;
+        z-index: 10;
+    }
+    
+    #header {
+        margin: 0%;
+        position: absolute;
+        width: 100%;
+        height: 5%;
+        background-color: black;
+    }
+    
+    #rightcol {
+        margin: 0%;
+        position: absolute;
+        width: 350px;
+        height: 90%;
+        top: 5%;
+        right: 0%;
+        background-color: #006666;
+        border-style: solid;
+        border-color: white;
+        border-width: 1px;
+        z-index: 1000;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+         
+    #seg1 {
+        position: absolute;
+        top: 0%;
+        width: 100%;
+        height: 30%;
+        background-color: #006666;
+    }
+    
+    #seg2 {
+        position: absolute;
+        top: 30%;
+        width: 100%;
+        height: 30%;
+        background-color: #006666;
+    }
+    
+    #seg3 {
+        position: absolute;
+        top: 60%;
+        width: 100%;
+        height: 40%;
+        background-color: #006666;
+    }
+    
+    h4 {
+        font-size: 14px;
+        font-family: Arial;
+        margin: 0;
+        padding: 8px;
+        width: 100%;
+        color: white;
+        text-decoration: none;
+    }
+</style>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/debug.js"></script>
+<script src="scripts/mw.js"></script>
